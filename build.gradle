@@ -9,7 +9,7 @@ sonarqube {
 	properties {
 		property "sonar.host.url", "https://sonarcloud.io"
 		property "sonar.organization", "fmagallanes97"
-		property "sonar.projectKey", "dev.fmagallanes97:backend-portfolio"
+		property "sonar.projectKey", "fmagallanes97_backend-portfolio"
 	}
 }
 

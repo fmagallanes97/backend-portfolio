@@ -27,11 +27,6 @@ jobs:
           gradle-version: wrapper
       - name: Build
         run: ./gradlew build -x test
-      - name: Upload a build artifact
-        uses: actions/upload-artifact@v3.1.1
-        with:
-          name: build
-          path: build
 
   lint:
     needs: [ build ]
@@ -41,11 +36,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Download a build artifact
-        uses: actions/download-artifact@v3.0.1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          name: build
-          path: build
+          java-version: '17'
+          distribution: 'temurin'
       - name: SonarCloud scan
         run: >
           ./gradlew sonar
@@ -67,10 +62,5 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Download a build artifact
-        uses: actions/download-artifact@v3.0.1
-        with:
-          name: build
-          path: build
       - name: Test
         run: ./gradlew test

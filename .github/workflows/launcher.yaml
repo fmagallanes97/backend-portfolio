@@ -8,8 +8,7 @@ on:
         type: string
 
 jobs:
-  gradle-launcher:
-    name: Gradle launcher
+  launcher:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout

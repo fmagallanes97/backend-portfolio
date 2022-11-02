@@ -16,7 +16,3 @@ jobs:
     uses: ./.github/workflows/launcher.yaml
     with:
       commands: test jacocoTestReport sonar -Dsonar.login=$SONAR_TOKEN
-    secrets: inherit
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

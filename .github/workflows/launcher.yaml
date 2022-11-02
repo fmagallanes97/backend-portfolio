@@ -4,8 +4,14 @@ on:
   workflow_call:
     inputs:
       commands:
+        default: 'build'
         required: true
         type: string
+    secrets:
+      GITHUB_TOKEN:
+        required: false
+      SONAR_TOKEN:
+        required: false
 
 jobs:
   launcher:
@@ -25,3 +31,6 @@ jobs:
         with:
           gradle-version: wrapper
           arguments: ${{ inputs.commands }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

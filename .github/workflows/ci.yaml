@@ -15,4 +15,4 @@ jobs:
   lint:
     uses: ./.github/workflows/launcher.yaml
     with:
-      commands: test jacocoTestReport sonar -Dsonar.login=$SONAR_TOKEN
+      commands: build jacocoTestReport sonarqube --info

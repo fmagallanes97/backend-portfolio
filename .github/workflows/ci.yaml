@@ -75,7 +75,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
       - name: SonarCloud scan
         run: >
-          ./gradlew sonar
+          ./gradlew sonar --debug
           -Dsonar.login=$SONAR_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

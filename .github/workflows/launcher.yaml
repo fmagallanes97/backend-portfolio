@@ -1,0 +1,28 @@
+name: Gradle launcher
+
+on:
+  workflow_call:
+    inputs:
+      commands:
+        required: true
+        type: string
+
+jobs:
+  gradle-launcher:
+    name: Gradle launcher
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Gradle build
+        uses: gradle/gradle-build-action@v2.3.3
+        with:
+          gradle-version: wrapper
+          arguments: ${{ inputs.commands }}

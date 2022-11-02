@@ -16,4 +16,4 @@ jobs:
     name: SonarQube
     uses: ./.github/workflows/launcher.yaml
     with:
-      commands: test testJacocoReport
+      commands: test jacocoTestReport

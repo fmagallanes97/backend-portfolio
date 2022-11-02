@@ -2,7 +2,14 @@ plugins {
 	id 'org.springframework.boot' version '2.7.5'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
+	id "jacoco"
 	id "org.sonarqube" version "3.5.0.2730"
+}
+
+jacocoTestReport {
+	reports {
+		xml.required = true
+	}
 }
 
 sonarqube {
@@ -10,6 +17,7 @@ sonarqube {
 		property "sonar.host.url", "https://sonarcloud.io"
 		property "sonar.organization", "fmagallanes97"
 		property "sonar.projectKey", "fmagallanes97_backend-portfolio"
+		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
 	}
 }
 

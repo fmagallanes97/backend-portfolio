@@ -43,6 +43,11 @@ jobs:
           distribution: 'temurin'
       - name: Test
         run: ./gradlew test jacocoTestReport
+      - name: Upload test report artifact
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: test-reports
+          path: ./build/reports
 
   lint:
     needs: [ build, test ]
@@ -57,6 +62,11 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+      - name: Download test report artifact
+        uses: actions/download-artifact@v3.0.1
+        with:
+          name: test-reports
+          path: ./build/reports
       - name: Cache SonarCloud packages
         uses: actions/cache@v3.0.11
         with:

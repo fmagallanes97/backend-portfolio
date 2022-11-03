@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY gradlew .
 COPY .gradle .gradle
-COPY pom.xml .
+COPY build.gradle .
 COPY src src
 
 RUN ./gradlew build -x test

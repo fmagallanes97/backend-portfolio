@@ -15,4 +15,4 @@ jobs:
   lint:
     uses: ./.github/workflows/launcher.yaml
     with:
-      commands: build jacocoTestReport sonarqube --info
+      commands: test jacocoTestReport sonar

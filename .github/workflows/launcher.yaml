@@ -7,9 +7,6 @@ on:
         default: 'build'
         required: true
         type: string
-    secrets:
-      SONAR_TOKEN:
-        required: false
 
 jobs:
   launcher:

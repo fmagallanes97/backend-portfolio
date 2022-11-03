@@ -53,7 +53,6 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.organization", "fmagallanes97"
         property "sonar.projectKey", "fmagallanes97_backend-portfolio"
-        property "sonar.login", System.getenv("SONAR_TOKEN")
         property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
     }
 }

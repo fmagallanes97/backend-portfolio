@@ -12,13 +12,12 @@ import javax.persistence.*;
 @Table(name = "contact")
 public class Contact {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String github;
     private String linkedin;
-    @MapsId
     @OneToOne
+    @MapsId
     @JoinColumn(name = "resume_id")
     private Resume resume;
 }

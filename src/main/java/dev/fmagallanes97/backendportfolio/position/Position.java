@@ -16,7 +16,8 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String role;
-    private String company_name;
+    @Column(name = "company_name")
+    private String companyName;
     @Column(name = "start_date")
     private LocalDate startDate;
     @Column(name = "end_date")

@@ -1,7 +1,7 @@
 package dev.fmagallanes97.backendportfolio.skill;
 
 import dev.fmagallanes97.backendportfolio.resume.Resume;
-import dev.fmagallanes97.backendportfolio.skilltype.SkillType;
+import dev.fmagallanes97.backendportfolio.skilltype.Type;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +18,7 @@ public class Skill {
     private String name;
     @ManyToOne
     @JoinColumn(name = "skill_type_id")
-    private SkillType skillType;
+    private Type type;
     @ManyToOne
     @JoinColumn(name = "resume_id")
     private Resume resume;

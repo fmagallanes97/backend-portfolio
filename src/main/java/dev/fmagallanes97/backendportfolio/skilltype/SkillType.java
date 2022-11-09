@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "skill_type")
-public class Type {
+public class SkillType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

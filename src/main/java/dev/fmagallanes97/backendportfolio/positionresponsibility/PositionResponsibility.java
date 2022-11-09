@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "position_responsibility")
-public class Responsibility {
+public class PositionResponsibility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,6 +1,6 @@
 package dev.fmagallanes97.backendportfolio.position.dto;
 
-import dev.fmagallanes97.backendportfolio.positionresponsibility.Responsibility;
+import dev.fmagallanes97.backendportfolio.positionresponsibility.PositionResponsibility;
 import dev.fmagallanes97.backendportfolio.resume.Resume;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +16,6 @@ public class PositionResponse {
     private String companyName;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<Responsibility> responsibilities;
+    private List<PositionResponsibility> responsibilities;
     private Resume resume;
 }

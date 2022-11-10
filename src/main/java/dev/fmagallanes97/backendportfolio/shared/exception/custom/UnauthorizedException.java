@@ -1,11 +1,10 @@
 package dev.fmagallanes97.backendportfolio.shared.exception.custom;
 
-import dev.fmagallanes97.backendportfolio.shared.exception.ApiError;
-import org.springframework.http.HttpStatus;
+import dev.fmagallanes97.backendportfolio.shared.exception.Error;
 
 public class UnauthorizedException extends CustomException {
 
-    public UnauthorizedException(ApiError error) {
+    public UnauthorizedException(Error error) {
         super(error.getStatus(), error.getDescription());
     }
 }

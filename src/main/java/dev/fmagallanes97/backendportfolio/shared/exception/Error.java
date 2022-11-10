@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ApiError {
+public enum Error {
     NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not found. Please, check the URI."),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "There are attributes with wrong values. Please, review the following."),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "The request does not have the format expected."),

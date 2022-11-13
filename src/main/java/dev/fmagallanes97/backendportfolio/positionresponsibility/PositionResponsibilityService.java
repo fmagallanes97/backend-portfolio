@@ -1,5 +1,7 @@
 package dev.fmagallanes97.backendportfolio.positionresponsibility;
 
+import dev.fmagallanes97.backendportfolio.shared.exception.Error;
+import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,9 @@ public class PositionResponsibilityService {
     }
 
     public PositionResponsibility findById(Long id) {
-        return repository.findById(id).orElseThrow(RuntimeException::new);
+        return repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
     }
 
     public List<PositionResponsibility> findAllByPositionId(Long id) {
@@ -26,7 +30,9 @@ public class PositionResponsibilityService {
     }
 
     public PositionResponsibility updateById(Long id, PositionResponsibility responsibility) {
-        PositionResponsibility probableResponsibility = repository.findById(id).orElseThrow(RuntimeException::new);
+        PositionResponsibility probableResponsibility = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
 
         probableResponsibility.setDescription(responsibility.getDescription());
         probableResponsibility.setPosition(responsibility.getPosition());
@@ -35,7 +41,10 @@ public class PositionResponsibilityService {
     }
 
     public void deleteById(Long id) {
-        PositionResponsibility probableResponsibility = repository.findById(id).orElseThrow(RuntimeException::new);
+        PositionResponsibility probableResponsibility = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
         repository.delete(probableResponsibility);
     }
 }

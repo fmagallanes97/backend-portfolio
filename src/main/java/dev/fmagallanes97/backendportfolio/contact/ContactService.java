@@ -1,5 +1,7 @@
 package dev.fmagallanes97.backendportfolio.contact;
 
+import dev.fmagallanes97.backendportfolio.shared.exception.Error;
+import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,11 +18,15 @@ public class ContactService {
     }
 
     public Contact findByResumeId(Long id) {
-        return repository.findById(id).orElseThrow(RuntimeException::new);
+        return repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
     }
 
     public Contact updateById(Long id, Contact contact) {
-        Contact probableContact = repository.findById(id).orElseThrow(RuntimeException::new);
+        Contact probableContact = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
 
         probableContact.setEmail(contact.getEmail());
         probableContact.setGithub(contact.getGithub());
@@ -31,7 +37,10 @@ public class ContactService {
     }
 
     public void deleteById(Long id) {
-        Contact probableContact = repository.findById(id).orElseThrow(RuntimeException::new);
+        Contact probableContact = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
         repository.delete(probableContact);
     }
 }

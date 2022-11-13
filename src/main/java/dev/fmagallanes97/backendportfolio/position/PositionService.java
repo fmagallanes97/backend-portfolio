@@ -1,5 +1,7 @@
 package dev.fmagallanes97.backendportfolio.position;
 
+import dev.fmagallanes97.backendportfolio.shared.exception.Error;
+import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,9 @@ public class PositionService {
     }
 
     public Position findById(Long id) {
-        return repository.findById(id).orElseThrow(RuntimeException::new);
+        return repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
     }
 
     public List<Position> findAllByResumeId(Long id) {
@@ -26,7 +30,9 @@ public class PositionService {
     }
 
     public Position updateById(Long id, Position position) {
-        Position probablePosition = repository.findById(id).orElseThrow(RuntimeException::new);
+        Position probablePosition = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
 
         probablePosition.setRole(position.getRole());
         probablePosition.setCompanyName(position.getCompanyName());
@@ -38,7 +44,10 @@ public class PositionService {
     }
 
     public void deleteById(Long id) {
-        Position probablePosition = repository.findById(id).orElseThrow(RuntimeException::new);
+        Position probablePosition = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
         repository.delete(probablePosition);
     }
 }

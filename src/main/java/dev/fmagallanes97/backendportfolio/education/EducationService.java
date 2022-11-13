@@ -1,5 +1,7 @@
 package dev.fmagallanes97.backendportfolio.education;
 
+import dev.fmagallanes97.backendportfolio.shared.exception.Error;
+import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,9 @@ public class EducationService {
     }
 
     public Education findById(Long id) {
-        return repository.findById(id).orElseThrow(RuntimeException::new);
+        return repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
     }
 
     public List<Education> findAllByResumeId(Long id) {
@@ -26,7 +30,9 @@ public class EducationService {
     }
 
     public Education updateById(Long id, Education education) {
-        Education probableEducation = repository.findById(id).orElseThrow(RuntimeException::new);
+        Education probableEducation = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
 
         probableEducation.setDegree(education.getDegree());
         probableEducation.setSchool(education.getSchool());
@@ -39,7 +45,10 @@ public class EducationService {
     }
 
     public void deleteById(Long id) {
-        Education probableEducation = repository.findById(id).orElseThrow(RuntimeException::new);
+        Education probableEducation = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
         repository.delete(probableEducation);
     }
 }

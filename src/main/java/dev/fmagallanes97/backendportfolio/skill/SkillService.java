@@ -1,5 +1,7 @@
 package dev.fmagallanes97.backendportfolio.skill;
 
+import dev.fmagallanes97.backendportfolio.shared.exception.Error;
+import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,9 @@ public class SkillService {
     }
 
     public Skill findById(Long id) {
-        return repository.findById(id).orElseThrow(RuntimeException::new);
+        return repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
     }
 
     public List<Skill> findAllByResumeId(Long id) {
@@ -26,7 +30,9 @@ public class SkillService {
     }
 
     public Skill updateById(Long id, Skill skill) {
-        Skill probableSkill = repository.findById(id).orElseThrow(RuntimeException::new);
+        Skill probableSkill = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
 
         probableSkill.setName(skill.getName());
         probableSkill.setType(skill.getType());
@@ -36,7 +42,10 @@ public class SkillService {
     }
 
     public void deleteById(Long id) {
-        Skill probableSkill = repository.findById(id).orElseThrow(RuntimeException::new);
+        Skill probableSkill = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
         repository.delete(probableSkill);
     }
 }

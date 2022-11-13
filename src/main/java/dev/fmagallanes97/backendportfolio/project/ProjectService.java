@@ -1,5 +1,7 @@
 package dev.fmagallanes97.backendportfolio.project;
 
+import dev.fmagallanes97.backendportfolio.shared.exception.Error;
+import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,9 @@ public class ProjectService {
     }
 
     public Project findById(Long id) {
-        return repository.findById(id).orElseThrow(RuntimeException::new);
+        return repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
     }
 
     public List<Project> findAll() {
@@ -26,7 +30,9 @@ public class ProjectService {
     }
 
     public Project updateById(Long id, Project project) {
-        Project probableProject = repository.findById(id).orElseThrow(RuntimeException::new);
+        Project probableProject = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
 
         probableProject.setTitle(project.getTitle());
         probableProject.setDescription(project.getDescription());
@@ -40,7 +46,10 @@ public class ProjectService {
     }
 
     public void deleteById(Long id) {
-        Project probableProject = repository.findById(id).orElseThrow(RuntimeException::new);
+        Project probableProject = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
         repository.delete(probableProject);
     }
 }

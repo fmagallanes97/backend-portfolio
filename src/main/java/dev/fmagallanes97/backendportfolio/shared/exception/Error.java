@@ -7,13 +7,20 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum Error {
-    NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not found. Please, check the URI."),
-    VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "There are attributes with wrong values. Please, review the following."),
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "The request does not have the format expected."),
-    INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error. Please try again later."),
-    UNAUTHORIZED_ERROR(HttpStatus.UNAUTHORIZED, "Sorry, you do not have permission to access this resource."),
-    FORBIDDEN_ERROR(HttpStatus.FORBIDDEN, "Sorry, you do not have privileges to access this resource.");
+    VALIDATION_ERROR(HttpStatus.BAD_REQUEST,
+            "Validation error",
+            "Some values in the specified JSON do not satisfy the conditions expected"),
+    INVALID_JSON(HttpStatus.BAD_REQUEST,
+            "Invalid JSON",
+            "The specified JSON is not syntactically valid"),
+    RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND,
+            "Resource not found",
+            "The specified resource does not exist"),
+    COUNTRY_WITH_SAME_CODE(HttpStatus.BAD_REQUEST,
+            "Bad request",
+            "There is a country with the same code");
 
     private final HttpStatus status;
+    private final String title;
     private final String description;
 }

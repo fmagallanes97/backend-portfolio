@@ -15,10 +15,7 @@ public enum Error {
             "The specified JSON is not syntactically valid"),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND,
             "Resource not found",
-            "The specified resource does not exist"),
-    COUNTRY_WITH_SAME_CODE(HttpStatus.BAD_REQUEST,
-            "Bad request",
-            "There is a country with the same code");
+            "The specified resource does not exist");
 
     private final HttpStatus status;
     private final String title;

@@ -14,7 +14,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -29,7 +28,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<InvalidArgumentResponse> arguments = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> new InvalidArgumentResponse(error.getField(), error.getDefaultMessage())).collect(Collectors.toList());
+                .map(error -> new InvalidArgumentResponse(error.getField(), error.getDefaultMessage())).toList();
         return ResponseEntity
                 .status(Error.VALIDATION_ERROR.getStatus())
                 .body(new ErrorResponse(Error.VALIDATION_ERROR.getTitle(), Error.VALIDATION_ERROR.getDescription(), arguments));

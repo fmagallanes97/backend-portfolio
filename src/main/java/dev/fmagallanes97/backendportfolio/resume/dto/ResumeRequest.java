@@ -4,16 +4,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 public class ResumeRequest {
-    @NotEmpty(message = "First name attribute is mandatory.")
+    @Size(min = 2, max = 45, message = "this value must be between 2 and 45 characters")
+    @NotEmpty(message = "this attribute is mandatory")
     private String firstName;
-    @NotEmpty(message = "Last name attribute is mandatory.")
+    @Size(min = 2, max = 45, message = "this value must be between 2 and 45 characters")
+    @NotEmpty(message = "this attribute is mandatory")
     private String lastName;
-    @NotEmpty(message = "Headline attribute is mandatory.")
+    @Size(min = 2, max = 45, message = "this value must be between 2 and 45 characters")
+    @NotEmpty(message = "this attribute is mandatory")
     private String headline;
-    @NotEmpty(message = "About attribute is mandatory.")
+    @Size(min = 20, max = 255, message = "this value must be between 20 and 255 characters")
+    @NotEmpty(message = "this attribute is mandatory")
     private String about;
 }

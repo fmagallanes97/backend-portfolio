@@ -20,10 +20,10 @@ public class Project {
     @Column(name = "start_date")
     private LocalDate startDate;
     private String website;
-    @Column(name = "github_repository")
-    private String githubRepository;
-    @Column(name = "preview_image")
-    private String previewImage;
+    @Column(name = "repository_url")
+    private String repositoryURL;
+    @Column(name = "preview_image_url")
+    private String previewImageURL;
     @ManyToOne
     @JoinColumn(name = "resume_id")
     private Resume resume;

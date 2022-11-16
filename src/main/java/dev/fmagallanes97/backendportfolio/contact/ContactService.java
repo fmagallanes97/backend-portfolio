@@ -29,8 +29,8 @@ public class ContactService {
         });
 
         probableContact.setEmail(contact.getEmail());
-        probableContact.setGithub(contact.getGithub());
-        probableContact.setLinkedin(contact.getLinkedin());
+        probableContact.setGithubProfileURL(contact.getGithubProfileURL());
+        probableContact.setLinkedinProfileURL(contact.getLinkedinProfileURL());
         probableContact.setResume(contact.getResume());
 
         return repository.save(probableContact);

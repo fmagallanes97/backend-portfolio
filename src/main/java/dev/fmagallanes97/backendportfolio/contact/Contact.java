@@ -14,8 +14,10 @@ public class Contact {
     @Id
     private Long id;
     private String email;
-    private String github;
-    private String linkedin;
+    @Column(name = "github_profile_url")
+    private String githubProfileURL;
+    @Column(name = "linkedin_profile_url")
+    private String linkedinProfileURL;
     @OneToOne
     @MapsId
     @JoinColumn(name = "resume_id")

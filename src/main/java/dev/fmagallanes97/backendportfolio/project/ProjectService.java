@@ -36,9 +36,9 @@ public class ProjectService {
 
         probableProject.setTitle(project.getTitle());
         probableProject.setDescription(project.getDescription());
-        probableProject.setGithubRepository(project.getGithubRepository());
+        probableProject.setRepositoryURL(project.getRepositoryURL());
         probableProject.setWebsite(project.getWebsite());
-        probableProject.setPreviewImage(project.getPreviewImage());
+        probableProject.setPreviewImageURL(project.getPreviewImageURL());
         probableProject.setStartDate(project.getStartDate());
         probableProject.setResume(project.getResume());
 

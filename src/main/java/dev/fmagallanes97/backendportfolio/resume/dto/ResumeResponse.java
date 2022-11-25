@@ -1,24 +1,21 @@
 package dev.fmagallanes97.backendportfolio.resume.dto;
 
-import dev.fmagallanes97.backendportfolio.education.Education;
-import dev.fmagallanes97.backendportfolio.position.Position;
-import dev.fmagallanes97.backendportfolio.project.Project;
-import dev.fmagallanes97.backendportfolio.skill.Skill;
-import lombok.Getter;
-import lombok.Setter;
+import dev.fmagallanes97.backendportfolio.education.dto.EducationResponse;
+import dev.fmagallanes97.backendportfolio.position.dto.PositionResponse;
+import dev.fmagallanes97.backendportfolio.project.dto.ProjectResponse;
+import dev.fmagallanes97.backendportfolio.skill.dto.SkillResponse;
 
 import java.util.List;
 
-@Getter
-@Setter
-public class ResumeResponse {
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String headline;
-    private String about;
-    private List<Education> educations;
-    private List<Position> positions;
-    private List<Project> projects;
-    private List<Skill> skills;
+public record ResumeResponse(
+        Long id,
+        String firstName,
+        String lastName,
+        String headline,
+        String about,
+        List<EducationResponse> education,
+        List<PositionResponse> positions,
+        List<ProjectResponse> projects,
+        List<SkillResponse> skills
+) {
 }

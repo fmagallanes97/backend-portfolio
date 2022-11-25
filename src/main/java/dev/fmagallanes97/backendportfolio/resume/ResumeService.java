@@ -1,46 +1,78 @@
 package dev.fmagallanes97.backendportfolio.resume;
 
+import dev.fmagallanes97.backendportfolio.contact.Contact;
+import dev.fmagallanes97.backendportfolio.contact.ContactRepository;
+import dev.fmagallanes97.backendportfolio.education.Education;
+import dev.fmagallanes97.backendportfolio.education.EducationRepository;
+import dev.fmagallanes97.backendportfolio.position.Position;
+import dev.fmagallanes97.backendportfolio.position.PositionRepository;
+import dev.fmagallanes97.backendportfolio.project.Project;
+import dev.fmagallanes97.backendportfolio.project.ProjectRepository;
+import dev.fmagallanes97.backendportfolio.resume.dto.ResumeRequest;
+import dev.fmagallanes97.backendportfolio.resume.dto.ResumeResponse;
+import dev.fmagallanes97.backendportfolio.resume.dto.mapper.ResumeMapper;
 import dev.fmagallanes97.backendportfolio.shared.exception.Error;
 import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
+import dev.fmagallanes97.backendportfolio.skill.Skill;
+import dev.fmagallanes97.backendportfolio.skill.SkillRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class ResumeService {
 
-    private final ResumeRepository repository;
+    private final ResumeMapper resumeMapper;
+    private final ResumeRepository resumeRepository;
+    private final ContactRepository contactRepository;
+    private final EducationRepository educationRepository;
+    private final PositionRepository positionRepository;
+    private final ProjectRepository projectRepository;
+    private final SkillRepository skillRepository;
 
-    public ResumeService(ResumeRepository repository) {
-        this.repository = repository;
+    public ResumeResponse save(ResumeRequest resumeRequest) {
+        Resume resume = resumeMapper.toEntity(resumeRequest);
+
+        return resumeMapper.toResponse(resumeRepository.save(resume));
     }
 
-    public Resume save(Resume resume) {
-        return repository.save(resume);
-    }
-
-    public Resume findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> {
+    public ResumeResponse findById(Long resumeId) {
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
+        Contact contact = contactRepository.findById(resumeId).orElse(null);
+        List<Education> education = educationRepository.findAllByResumeId(resumeId);
+        List<Position> positions = positionRepository.findAllByResumeId(resumeId);
+        List<Project> projects = projectRepository.findAllByResumeId(resumeId);
+        List<Skill> skills = skillRepository.findAllByResumeId(resumeId);
+
+        return resumeMapper.toResponse(
+                resume,
+                contact,
+                education,
+                positions,
+                projects,
+                skills
+        );
     }
 
-    public Resume updateById(Long id, Resume resume) {
-        Resume probableResume = repository.findById(id).orElseThrow(() -> {
+    public ResumeResponse updateById(Long resumeId, ResumeRequest resumeRequest) {
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        probableResume.setFirstName(resume.getFirstName());
-        probableResume.setLastName(resume.getLastName());
-        probableResume.setHeadline(resume.getHeadline());
-        probableResume.setAbout(resume.getAbout());
+        resumeMapper.update(resumeRequest, resume);
 
-        return repository.save(probableResume);
+        return resumeMapper.toResponse(resumeRepository.save(resume));
     }
 
-    public void deleteById(Long id) {
-        Resume probableResume = repository.findById(id).orElseThrow(() -> {
+    public void deleteById(Long resumeId) {
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        repository.delete(probableResume);
+        resumeRepository.delete(resume);
     }
 }

@@ -1,5 +1,6 @@
 package dev.fmagallanes97.backendportfolio.resume.dto;
 
+import dev.fmagallanes97.backendportfolio.contact.dto.ContactResponse;
 import dev.fmagallanes97.backendportfolio.education.dto.EducationResponse;
 import dev.fmagallanes97.backendportfolio.position.dto.PositionResponse;
 import dev.fmagallanes97.backendportfolio.project.dto.ProjectResponse;
@@ -13,6 +14,7 @@ public record ResumeResponse(
         String lastName,
         String headline,
         String about,
+        ContactResponse contact,
         List<EducationResponse> education,
         List<PositionResponse> positions,
         List<ProjectResponse> projects,

@@ -1,54 +1,55 @@
 package dev.fmagallanes97.backendportfolio.education;
 
+import dev.fmagallanes97.backendportfolio.education.dto.EducationRequest;
+import dev.fmagallanes97.backendportfolio.education.dto.EducationResponse;
+import dev.fmagallanes97.backendportfolio.education.dto.mapper.EducationMapper;
 import dev.fmagallanes97.backendportfolio.shared.exception.Error;
 import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class EducationService {
 
-    private final EducationRepository repository;
+    private final EducationMapper educationMapper;
+    private final EducationRepository educationRepository;
 
-    public EducationService(EducationRepository repository) {
-        this.repository = repository;
+    public EducationResponse save(EducationRequest educationRequest) {
+        Education education = educationMapper.toEntity(educationRequest);
+
+        return educationMapper.toResponse(educationRepository.save(education));
     }
 
-    public Education save(Education education) {
-        return repository.save(education);
-    }
-
-    public Education findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
-    }
-
-    public List<Education> findAllByResumeId(Long id) {
-        return repository.findAllByResumeId(id);
-    }
-
-    public Education updateById(Long id, Education education) {
-        Education probableEducation = repository.findById(id).orElseThrow(() -> {
+    public EducationResponse findById(Long educationId) {
+        Education education = educationRepository.findById(educationId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        probableEducation.setDegree(education.getDegree());
-        probableEducation.setSchool(education.getSchool());
-        probableEducation.setAcademicField(education.getAcademicField());
-        probableEducation.setStartDate(education.getStartDate());
-        probableEducation.setEndDate(education.getEndDate());
-        probableEducation.setResume(education.getResume());
-
-        return repository.save(probableEducation);
+        return educationMapper.toResponse(education);
     }
 
-    public void deleteById(Long id) {
-        Education probableEducation = repository.findById(id).orElseThrow(() -> {
+    public List<EducationResponse> findAllByResumeId(Long resumeId) {
+        return educationMapper.toResponseList(educationRepository.findAllByResumeId(resumeId));
+    }
+
+    public EducationResponse updateById(Long educationId, EducationRequest educationRequest) {
+        Education education = educationRepository.findById(educationId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        repository.delete(probableEducation);
+        educationMapper.update(educationRequest, education);
+
+        return educationMapper.toResponse(educationRepository.save(education));
+    }
+
+    public void deleteById(Long educationId) {
+        Education education = educationRepository.findById(educationId).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
+        educationRepository.delete(education);
     }
 }

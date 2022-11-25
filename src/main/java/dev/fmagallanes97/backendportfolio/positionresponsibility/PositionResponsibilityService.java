@@ -1,50 +1,55 @@
 package dev.fmagallanes97.backendportfolio.positionresponsibility;
 
+import dev.fmagallanes97.backendportfolio.positionresponsibility.dto.PositionResponsibilityRequest;
+import dev.fmagallanes97.backendportfolio.positionresponsibility.dto.PositionResponsibilityResponse;
+import dev.fmagallanes97.backendportfolio.positionresponsibility.dto.mapper.PositionResponsibilityMapper;
 import dev.fmagallanes97.backendportfolio.shared.exception.Error;
 import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PositionResponsibilityService {
 
-    private final PositionResponsibilityRepository repository;
+    private final PositionResponsibilityMapper posResponsibilityMapper;
+    private final PositionResponsibilityRepository posResponsibilityRepository;
 
-    public PositionResponsibilityService(PositionResponsibilityRepository repository) {
-        this.repository = repository;
+    public PositionResponsibilityResponse save(PositionResponsibilityRequest posResponsibilityRequest) {
+        PositionResponsibility posResponsibility = posResponsibilityMapper.toEntity(posResponsibilityRequest);
+
+        return posResponsibilityMapper.toResponse(posResponsibilityRepository.save(posResponsibility));
     }
 
-    public PositionResponsibility save(PositionResponsibility responsibility) {
-        return repository.save(responsibility);
-    }
-
-    public PositionResponsibility findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
-    }
-
-    public List<PositionResponsibility> findAllByPositionId(Long id) {
-        return repository.findAllByPositionId(id);
-    }
-
-    public PositionResponsibility updateById(Long id, PositionResponsibility responsibility) {
-        PositionResponsibility probableResponsibility = repository.findById(id).orElseThrow(() -> {
+    public PositionResponsibilityResponse findById(Long posResponsibilityId) {
+        PositionResponsibility posResponsibility = posResponsibilityRepository.findById(posResponsibilityId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        probableResponsibility.setDescription(responsibility.getDescription());
-        probableResponsibility.setPosition(responsibility.getPosition());
-
-        return repository.save(probableResponsibility);
+        return posResponsibilityMapper.toResponse(posResponsibility);
     }
 
-    public void deleteById(Long id) {
-        PositionResponsibility probableResponsibility = repository.findById(id).orElseThrow(() -> {
+    public List<PositionResponsibilityResponse> findAllByPositionId(Long positionId) {
+        return posResponsibilityMapper.toResponseList(posResponsibilityRepository.findAllByPositionId(positionId));
+    }
+
+    public PositionResponsibilityResponse updateById(Long posResponsibilityId, PositionResponsibilityRequest posResponsibilityRequest) {
+        PositionResponsibility posResponsibility = posResponsibilityRepository.findById(posResponsibilityId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        repository.delete(probableResponsibility);
+        posResponsibilityMapper.update(posResponsibilityRequest, posResponsibility);
+
+        return posResponsibilityMapper.toResponse(posResponsibilityRepository.save(posResponsibility));
+    }
+
+    public void deleteById(Long posResponsibilityId) {
+        PositionResponsibility posResponsibility = posResponsibilityRepository.findById(posResponsibilityId).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
+        posResponsibilityRepository.delete(posResponsibility);
     }
 }

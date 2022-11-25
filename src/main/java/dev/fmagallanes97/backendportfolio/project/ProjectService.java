@@ -1,55 +1,55 @@
 package dev.fmagallanes97.backendportfolio.project;
 
+import dev.fmagallanes97.backendportfolio.project.dto.ProjectRequest;
+import dev.fmagallanes97.backendportfolio.project.dto.ProjectResponse;
+import dev.fmagallanes97.backendportfolio.project.dto.mapper.ProjectMapper;
 import dev.fmagallanes97.backendportfolio.shared.exception.Error;
 import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectService {
 
-    private final ProjectRepository repository;
+    private final ProjectMapper projectMapper;
+    private final ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepository repository) {
-        this.repository = repository;
+    public ProjectResponse save(ProjectRequest projectRequest) {
+        Project project = projectMapper.toEntity(projectRequest);
+
+        return projectMapper.toResponse(projectRepository.save(project));
     }
 
-    public Project save(Project project) {
-        return repository.save(project);
-    }
-
-    public Project findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
-    }
-
-    public List<Project> findAll() {
-        return repository.findAll();
-    }
-
-    public Project updateById(Long id, Project project) {
-        Project probableProject = repository.findById(id).orElseThrow(() -> {
+    public ProjectResponse findById(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        probableProject.setTitle(project.getTitle());
-        probableProject.setDescription(project.getDescription());
-        probableProject.setRepositoryURL(project.getRepositoryURL());
-        probableProject.setWebsite(project.getWebsite());
-        probableProject.setPreviewImageURL(project.getPreviewImageURL());
-        probableProject.setStartDate(project.getStartDate());
-        probableProject.setResume(project.getResume());
-
-        return repository.save(probableProject);
+        return projectMapper.toResponse(project);
     }
 
-    public void deleteById(Long id) {
-        Project probableProject = repository.findById(id).orElseThrow(() -> {
+    public List<ProjectResponse> findAllByResumeId(Long resumeId) {
+        return projectMapper.toResponseList(projectRepository.findAllByResumeId(resumeId));
+    }
+
+    public ProjectResponse updateById(Long projectId, ProjectRequest projectRequest) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        repository.delete(probableProject);
+        projectMapper.update(projectRequest, project);
+
+        return projectMapper.toResponse(projectRepository.save(project));
+    }
+
+    public void deleteById(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
+        projectRepository.delete(project);
     }
 }

@@ -10,6 +10,6 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface PositionMapper extends RequestMapper<Position, PositionRequest>, ResponseMapper<Position, PositionMapper> {
+public interface PositionMapper extends RequestMapper<Position, PositionRequest>, ResponseMapper<Position, PositionResponse> {
     List<PositionResponse> toResponseList(List<Position> positions);
 }

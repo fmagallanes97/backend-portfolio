@@ -1,46 +1,49 @@
 package dev.fmagallanes97.backendportfolio.resume;
 
+import dev.fmagallanes97.backendportfolio.resume.dto.ResumeRequest;
+import dev.fmagallanes97.backendportfolio.resume.dto.ResumeResponse;
+import dev.fmagallanes97.backendportfolio.resume.dto.mapper.ResumeMapper;
 import dev.fmagallanes97.backendportfolio.shared.exception.Error;
 import dev.fmagallanes97.backendportfolio.shared.exception.custom.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ResumeService {
 
-    private final ResumeRepository repository;
+    private final ResumeMapper resumeMapper;
+    private final ResumeRepository resumeRepository;
 
-    public ResumeService(ResumeRepository repository) {
-        this.repository = repository;
+    public ResumeResponse save(ResumeRequest resumeRequest) {
+        Resume resume = resumeMapper.toEntity(resumeRequest);
+
+        return resumeMapper.toResponse(resumeRepository.save(resume));
     }
 
-    public Resume save(Resume resume) {
-        return repository.save(resume);
-    }
-
-    public Resume findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
-    }
-
-    public Resume updateById(Long id, Resume resume) {
-        Resume probableResume = repository.findById(id).orElseThrow(() -> {
+    public ResumeResponse findById(Long resumeId) {
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        probableResume.setFirstName(resume.getFirstName());
-        probableResume.setLastName(resume.getLastName());
-        probableResume.setHeadline(resume.getHeadline());
-        probableResume.setAbout(resume.getAbout());
-
-        return repository.save(probableResume);
+        return resumeMapper.toResponse(resume);
     }
 
-    public void deleteById(Long id) {
-        Resume probableResume = repository.findById(id).orElseThrow(() -> {
+    public ResumeResponse updateById(Long resumeId, ResumeRequest resumeRequest) {
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        repository.delete(probableResume);
+        resumeMapper.update(resumeRequest, resume);
+
+        return resumeMapper.toResponse(resumeRepository.save(resume));
+    }
+
+    public void deleteById(Long resumeId) {
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+
+        resumeRepository.delete(resume);
     }
 }

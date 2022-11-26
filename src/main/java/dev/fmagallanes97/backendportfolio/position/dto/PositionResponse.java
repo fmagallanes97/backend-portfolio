@@ -1,6 +1,6 @@
 package dev.fmagallanes97.backendportfolio.position.dto;
 
-import dev.fmagallanes97.backendportfolio.positionresponsibility.PositionResponsibility;
+import dev.fmagallanes97.backendportfolio.positionresponsibility.PosResponsibility;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,6 +11,6 @@ public record PositionResponse(
         String companyName,
         LocalDate startDate,
         LocalDate endDate,
-        List<PositionResponsibility> responsibilities
+        List<PosResponsibility> responsibilities
 ) {
 }

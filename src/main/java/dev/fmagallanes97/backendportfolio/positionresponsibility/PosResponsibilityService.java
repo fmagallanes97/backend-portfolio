@@ -1,5 +1,7 @@
 package dev.fmagallanes97.backendportfolio.positionresponsibility;
 
+import dev.fmagallanes97.backendportfolio.position.Position;
+import dev.fmagallanes97.backendportfolio.position.PositionRepository;
 import dev.fmagallanes97.backendportfolio.positionresponsibility.dto.PosResponsibilityRequest;
 import dev.fmagallanes97.backendportfolio.positionresponsibility.dto.PosResponsibilityResponse;
 import dev.fmagallanes97.backendportfolio.positionresponsibility.dto.mapper.PosResponsibilityMapper;
@@ -15,16 +17,22 @@ import java.util.List;
 public class PosResponsibilityService {
 
     private final PosResponsibilityMapper posResponsibilityMapper;
+    private final PositionRepository positionRepository;
     private final PosResponsibilityRepository posResponsibilityRepository;
 
-    public PosResponsibilityResponse save(PosResponsibilityRequest posResponsibilityRequest) {
-        PosResponsibility posResponsibility = posResponsibilityMapper.toEntity(posResponsibilityRequest);
+    public PosResponsibilityResponse save(Long positionId, PosResponsibilityRequest responsibilityRequest) {
+        Position position = positionRepository.findById(positionId).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+        PosResponsibility responsibility = posResponsibilityMapper.toEntity(responsibilityRequest);
 
-        return posResponsibilityMapper.toResponse(posResponsibilityRepository.save(posResponsibility));
+        position.addResponsibility(responsibility);
+
+        return posResponsibilityMapper.toResponse(posResponsibilityRepository.save(responsibility));
     }
 
-    public PosResponsibilityResponse findById(Long posResponsibilityId) {
-        PosResponsibility posResponsibility = posResponsibilityRepository.findById(posResponsibilityId).orElseThrow(() -> {
+    public PosResponsibilityResponse findById(Long responsibilityId) {
+        PosResponsibility posResponsibility = posResponsibilityRepository.findById(responsibilityId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
@@ -35,21 +43,26 @@ public class PosResponsibilityService {
         return posResponsibilityMapper.toResponseList(posResponsibilityRepository.findAllByPositionId(positionId));
     }
 
-    public PosResponsibilityResponse updateById(Long posResponsibilityId, PosResponsibilityRequest posResponsibilityRequest) {
-        PosResponsibility posResponsibility = posResponsibilityRepository.findById(posResponsibilityId).orElseThrow(() -> {
+    public PosResponsibilityResponse updateById(Long responsibilityId, PosResponsibilityRequest responsibilityRequest) {
+        PosResponsibility responsibility = posResponsibilityRepository.findById(responsibilityId).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        posResponsibilityMapper.update(posResponsibilityRequest, posResponsibility);
+        posResponsibilityMapper.update(responsibilityRequest, responsibility);
 
-        return posResponsibilityMapper.toResponse(posResponsibilityRepository.save(posResponsibility));
+        return posResponsibilityMapper.toResponse(posResponsibilityRepository.save(responsibility));
     }
 
-    public void deleteById(Long posResponsibilityId) {
-        PosResponsibility posResponsibility = posResponsibilityRepository.findById(posResponsibilityId).orElseThrow(() -> {
+    public void deleteById(Long responsibilityId) {
+        PosResponsibility responsibility = posResponsibilityRepository.findById(responsibilityId).orElseThrow(() -> {
+            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
+        });
+        Position position = positionRepository.findById(responsibility.getPosition().getId()).orElseThrow(() -> {
             throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
         });
 
-        posResponsibilityRepository.delete(posResponsibility);
+        position.removeResponsibility(responsibility);
+
+        posResponsibilityRepository.delete(responsibility);
     }
 }

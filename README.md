@@ -33,12 +33,6 @@ java -version
 gradle -v
 ```
 
-- To check the installed version of Spring Boot:
-
-```
-spring --version
-```
-
 - To check the installed version of Docker:
 
 ```

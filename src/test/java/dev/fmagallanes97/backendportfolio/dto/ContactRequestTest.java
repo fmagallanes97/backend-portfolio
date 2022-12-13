@@ -1,6 +1,5 @@
-package dev.fmagallanes97.backendportfolio.contact.dto;
+package dev.fmagallanes97.backendportfolio.dto;
 
-import dev.fmagallanes97.backendportfolio.dto.ContactRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

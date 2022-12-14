@@ -2,8 +2,8 @@ package dev.fmagallanes97.backendportfolio.service;
 
 import dev.fmagallanes97.backendportfolio.model.Position;
 import dev.fmagallanes97.backendportfolio.repository.PositionRepository;
-import dev.fmagallanes97.backendportfolio.dto.PositionRequest;
-import dev.fmagallanes97.backendportfolio.dto.PositionResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.PositionRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.PositionResponse;
 import dev.fmagallanes97.backendportfolio.dto.mapper.PositionMapper;
 import dev.fmagallanes97.backendportfolio.model.Resume;
 import dev.fmagallanes97.backendportfolio.repository.ResumeRepository;

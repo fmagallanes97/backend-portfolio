@@ -1,7 +1,7 @@
 package dev.fmagallanes97.backendportfolio.exception;
 
-import dev.fmagallanes97.backendportfolio.dto.ErrorResponse;
-import dev.fmagallanes97.backendportfolio.dto.InvalidArgumentResponse;
+import dev.fmagallanes97.backendportfolio.dto.response.ErrorResponse;
+import dev.fmagallanes97.backendportfolio.dto.response.InvalidArgumentResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

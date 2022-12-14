@@ -1,8 +1,8 @@
 package dev.fmagallanes97.backendportfolio.dto.mapper;
 
 import dev.fmagallanes97.backendportfolio.model.Project;
-import dev.fmagallanes97.backendportfolio.dto.ProjectRequest;
-import dev.fmagallanes97.backendportfolio.dto.ProjectResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.ProjectRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.ProjectResponse;
 import org.mapstruct.Mapper;
 
 import java.util.List;

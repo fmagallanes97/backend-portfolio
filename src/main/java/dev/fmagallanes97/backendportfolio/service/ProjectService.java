@@ -2,8 +2,8 @@ package dev.fmagallanes97.backendportfolio.service;
 
 import dev.fmagallanes97.backendportfolio.model.Project;
 import dev.fmagallanes97.backendportfolio.repository.ProjectRepository;
-import dev.fmagallanes97.backendportfolio.dto.ProjectRequest;
-import dev.fmagallanes97.backendportfolio.dto.ProjectResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.ProjectRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.ProjectResponse;
 import dev.fmagallanes97.backendportfolio.dto.mapper.ProjectMapper;
 import dev.fmagallanes97.backendportfolio.model.Resume;
 import dev.fmagallanes97.backendportfolio.repository.ResumeRepository;

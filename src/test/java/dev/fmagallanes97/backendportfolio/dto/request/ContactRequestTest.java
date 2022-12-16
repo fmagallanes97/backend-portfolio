@@ -1,8 +1,8 @@
 package dev.fmagallanes97.backendportfolio.dto.request;
 
-import dev.fmagallanes97.backendportfolio.dto.request.ContactRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -15,7 +15,8 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Contact request")
+@Tag("unit")
+@DisplayName("Contact request validation test")
 class ContactRequestTest {
 
     Validator validator;
@@ -26,31 +27,47 @@ class ContactRequestTest {
         validator = factory.getValidator();
     }
 
-    @ParameterizedTest(name = "when email=''{0}'', then notify with errorMessage=''{1}''")
+    @ParameterizedTest(name = "given the email=''{1}'', then invalidate with the errorMessage=''{2}''")
     @CsvSource({
-            "michae_cappsz6j2buy.xvr, this value is not a valid email",
-            "m@buy.xvr, this value must be between 12 and 45 characters",
-            ", this attribute is mandatory"
+            "email, ron.weasley@.hogwarts, this value is not a valid email",
+            "email, neville@edu, this value must be between 12 and 45 characters",
+            "email,, this attribute is mandatory"
     })
-    @DisplayName("It should notify when creating contact with an invalid email value")
-    void should_fail_creating_contact_with_invalid_email_value(String email, String errorMessage) {
-        ContactRequest contactRequest = new ContactRequest(email, "", "");
-        Set<ConstraintViolation<ContactRequest>> constraintViolations = validator.validate(contactRequest);
+    @DisplayName("It should invalidate email value with a constraint violation")
+    void should_invalidate_wrong_email(String attribute, String value, String errorMessage) {
+        // Given
+        ContactRequest request = new ContactRequest(
+                value,
+                "https://github.com/hpotter",
+                "https://linkedin.com/in/hpotter"
+        );
 
-        assertThat(constraintViolations).hasSize(1);
+        // When
+        Set<ConstraintViolation<ContactRequest>> violations = validator.validate(request);
 
-        ConstraintViolation<ContactRequest> constraintViolation = constraintViolations.iterator().next();
+        // Then
+        assertThat(violations).hasSize(1);
 
-        assertThat(constraintViolation.getPropertyPath().toString()).hasToString("email");
-        assertThat(constraintViolation.getMessage()).isEqualTo(errorMessage);
+        ConstraintViolation<ContactRequest> violation = violations.iterator().next();
+
+        assertThat(violation.getPropertyPath().toString()).hasToString(attribute);
+        assertThat(violation.getMessage()).isEqualTo(errorMessage);
     }
 
     @Test
-    @DisplayName("It should pass when creating contact respecting all email constraints violations")
-    void should_pass_contact_constraints() {
-        ContactRequest contactRequest = new ContactRequest("shadawn_eichlerj@anthony.nd", "", "");
-        Set<ConstraintViolation<ContactRequest>> constraintViolations = validator.validate(contactRequest);
+    @DisplayName("It should validate a contact request that passes all the constraint violations\n")
+    void should_validate_request_successfully() {
+        // Given
+        ContactRequest request = new ContactRequest(
+                "harry.potter@hogwarts.edu",
+                "https://github.com/hpotter",
+                "https://linkedin.com/in/hpotter"
+        );
 
+        // When
+        Set<ConstraintViolation<ContactRequest>> constraintViolations = validator.validate(request);
+
+        // Then
         assertThat(constraintViolations).isEmpty();
     }
 }

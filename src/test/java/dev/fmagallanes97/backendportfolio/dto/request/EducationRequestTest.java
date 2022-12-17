@@ -1,9 +1,6 @@
 package dev.fmagallanes97.backendportfolio.dto.request;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.JavaTimeConversionPattern;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,6 +14,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("unit")
 @DisplayName("Education request validation test")
 class EducationRequestTest {
 
@@ -28,14 +26,15 @@ class EducationRequestTest {
         validator = factory.getValidator();
     }
 
-    @ParameterizedTest(name = "when degree=''{1}'', then invalidate with errorMessage=''{2}''")
+    @ParameterizedTest(name = "given the degree=''{1}'', then invalidate with the errorMessage=''{2}''")
     @CsvSource({
             "degree, Boo, this value must be between 4 and 45 characters",
             "degree, Doctor of Transfiguration and Apparition with a focus on Defense Against the Dark Arts, this value must be between 4 and 45 characters",
             "degree,, this attribute is mandatory"
     })
-    @DisplayName("It should invalidate degree value with a constraint violation")
-    void should_invalidate_degree_value(String attribute, String value, String errorMessage) {
+    @DisplayName("It should invalidate the degree value with a constraint violation")
+    void should_invalidate_wrong_degree_value(String attribute, String value, String errorMessage) {
+        // Given
         EducationRequest request = new EducationRequest(
                 value,
                 "Hogwarts School of Witchcraft and Wizardry",
@@ -44,8 +43,10 @@ class EducationRequestTest {
                 LocalDate.of(2017, 5, 31)
         );
 
+        // When
         Set<ConstraintViolation<EducationRequest>> violations = validator.validate(request);
 
+        // Then
         assertThat(violations).hasSize(1);
 
         ConstraintViolation<EducationRequest> violation = violations.iterator().next();
@@ -54,14 +55,15 @@ class EducationRequestTest {
         assertThat(violation.getMessage()).isEqualTo(errorMessage);
     }
 
-    @ParameterizedTest(name = "when school=''{1}'', then invalidate with errorMessage=''{2}''")
+    @ParameterizedTest(name = "given the school=''{1}'', then invalidate with the errorMessage=''{2}''")
     @CsvSource({
             "school, Hog, this value must be between 4 and 45 characters",
             "school, Durmstrang Institute of Magic and Sorcery and Spells, this value must be between 4 and 45 characters",
             "school,, this attribute is mandatory"
     })
-    @DisplayName("It should invalidate school value with a constraint violation")
-    void should_invalidate_school_value(String attribute, String value, String errorMessage) {
+    @DisplayName("It should invalidate the school value with a constraint violation")
+    void should_invalidate_wrong_school_value(String attribute, String value, String errorMessage) {
+        // Given
         EducationRequest request = new EducationRequest(
                 "Bachelor of Magic",
                 value,
@@ -70,8 +72,10 @@ class EducationRequestTest {
                 LocalDate.of(2017, 5, 31)
         );
 
+        // When
         Set<ConstraintViolation<EducationRequest>> violations = validator.validate(request);
 
+        // Then
         assertThat(violations).hasSize(1);
 
         ConstraintViolation<EducationRequest> violation = violations.iterator().next();
@@ -80,14 +84,15 @@ class EducationRequestTest {
         assertThat(violation.getMessage()).isEqualTo(errorMessage);
     }
 
-    @ParameterizedTest(name = "when academicField=''{1}'', then invalidate with errorMessage=''{2}''")
+    @ParameterizedTest(name = "given the academicField=''{1}'', then invalidate with the errorMessage=''{2}''")
     @CsvSource({
             "academicField, Art, this value must be between 4 and 45 characters",
             "academicField, 'Magical Arts, Enchantment, and the Study of Mythical Creatures', this value must be between 4 and 45 characters",
             "academicField,, this attribute is mandatory"
     })
-    @DisplayName("It should invalidate academic field value with a constraint violation")
-    void should_invalidate_academic_field_value(String attribute, String value, String errorMessage) {
+    @DisplayName("It should invalidate the academic field value with a constraint violation")
+    void should_invalidate_wrong_academic_field_value(String attribute, String value, String errorMessage) {
+        // Given
         EducationRequest request = new EducationRequest(
                 "Bachelor of Magic",
                 "Hogwarts School of Witchcraft and Wizardry",
@@ -96,8 +101,10 @@ class EducationRequestTest {
                 LocalDate.of(2017, 5, 31)
         );
 
+        // When
         Set<ConstraintViolation<EducationRequest>> violations = validator.validate(request);
 
+        // Then
         assertThat(violations).hasSize(1);
 
         ConstraintViolation<EducationRequest> violation = violations.iterator().next();
@@ -106,14 +113,14 @@ class EducationRequestTest {
         assertThat(violation.getMessage()).isEqualTo(errorMessage);
     }
 
-
     @Nested
-    @DisplayName("It should invalidate start date value with a constraint violation")
-    class startDate {
+    @DisplayName("It should invalidate the start date value with a constraint violation")
+    class should_invalidate_wrong_start_date {
 
         @Test
-        @DisplayName("when startDate='2050-1-1', then invalidate with errorMessage='this value must be between past and present time'")
+        @DisplayName("given the startDate='2050-1-1', then invalidate with the errorMessage='this value must be between past and present time'")
         void should_invalidate_start_date_future_value() {
+            // Given
             EducationRequest request = new EducationRequest(
                     "Bachelor of Magic",
                     "Hogwarts School of Witchcraft and Wizardry",
@@ -122,8 +129,10 @@ class EducationRequestTest {
                     LocalDate.of(2017, 5, 31)
             );
 
+            // When
             Set<ConstraintViolation<EducationRequest>> violations = validator.validate(request);
 
+            // Then
             assertThat(violations).hasSize(1);
 
             ConstraintViolation<EducationRequest> violation = violations.iterator().next();
@@ -133,8 +142,9 @@ class EducationRequestTest {
         }
 
         @Test
-        @DisplayName("when startDate='null', then invalidate with errorMessage='this attribute is mandatory'")
+        @DisplayName("given the startDate='null', then invalidate with the errorMessage='this attribute is mandatory'")
         void should_invalidate_start_date_null_value() {
+            // Given
             EducationRequest request = new EducationRequest(
                     "Bachelor of Magic",
                     "Hogwarts School of Witchcraft and Wizardry",
@@ -143,8 +153,10 @@ class EducationRequestTest {
                     LocalDate.of(2017, 5, 31)
             );
 
+            // When
             Set<ConstraintViolation<EducationRequest>> violations = validator.validate(request);
 
+            // Then
             assertThat(violations).hasSize(1);
 
             ConstraintViolation<EducationRequest> violation = violations.iterator().next();
@@ -155,12 +167,13 @@ class EducationRequestTest {
 
     }
 
-    @ParameterizedTest(name = "when endDate=''{1}'', then invalidate with errorMessage=''{2}''")
+    @ParameterizedTest(name = "given the endDate=''{1}'', then invalidate with the errorMessage=''{2}''")
     @CsvSource({
             "endDate, 2050-01-01, this value must be between past and present time"
     })
-    @DisplayName("It should invalidate start date value with a constraint violation")
-    void should_invalidate_end_date_value(String attribute, @JavaTimeConversionPattern("yyyy-MM-dd") LocalDate value, String errorMessage) {
+    @DisplayName("It should invalidate the start date value with a constraint violation")
+    void should_invalidate_wrong_end_date_value(String attribute, @JavaTimeConversionPattern("yyyy-MM-dd") LocalDate value, String errorMessage) {
+        // Given
         EducationRequest request = new EducationRequest(
                 "Bachelor of Magic",
                 "Hogwarts School of Witchcraft and Wizardry",
@@ -169,8 +182,10 @@ class EducationRequestTest {
                 value
         );
 
+        // When
         Set<ConstraintViolation<EducationRequest>> violations = validator.validate(request);
 
+        // Then
         assertThat(violations).hasSize(1);
 
         ConstraintViolation<EducationRequest> violation = violations.iterator().next();
@@ -180,8 +195,9 @@ class EducationRequestTest {
     }
 
     @Test
-    @DisplayName("It should validate degree value without constraint violations")
-    void should_validate_education_request() {
+    @DisplayName("It should validate an education request that passes all the constraints")
+    void should_validate_request_successfully() {
+        // Given
         EducationRequest request = new EducationRequest(
                 "Bachelor of Magic",
                 "Hogwarts School of Witchcraft and Wizardry",
@@ -190,8 +206,10 @@ class EducationRequestTest {
                 LocalDate.of(2017, 5, 31)
         );
 
+        // When
         Set<ConstraintViolation<EducationRequest>> violations = validator.validate(request);
 
-        assertThat(violations).hasSize(0);
+        // Then
+        assertThat(violations).isEmpty();
     }
 }

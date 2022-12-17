@@ -32,7 +32,7 @@ class EducationRequestTest {
             "degree, Doctor of Transfiguration and Apparition with a focus on Defense Against the Dark Arts, this value must be between 4 and 45 characters",
             "degree,, this attribute is mandatory"
     })
-    @DisplayName("It should invalidate the degree value with a constraint violation")
+    @DisplayName("Given an invalid degree value, it should produce a constraint violation")
     void should_invalidate_wrong_degree_value(String attribute, String value, String errorMessage) {
         // Given
         EducationRequest request = new EducationRequest(
@@ -61,7 +61,7 @@ class EducationRequestTest {
             "school, Durmstrang Institute of Magic and Sorcery and Spells, this value must be between 4 and 45 characters",
             "school,, this attribute is mandatory"
     })
-    @DisplayName("It should invalidate the school value with a constraint violation")
+    @DisplayName("Given an invalid school value, it should produce a constraint violation")
     void should_invalidate_wrong_school_value(String attribute, String value, String errorMessage) {
         // Given
         EducationRequest request = new EducationRequest(
@@ -90,7 +90,7 @@ class EducationRequestTest {
             "academicField, 'Magical Arts, Enchantment, and the Study of Mythical Creatures', this value must be between 4 and 45 characters",
             "academicField,, this attribute is mandatory"
     })
-    @DisplayName("It should invalidate the academic field value with a constraint violation")
+    @DisplayName("Given an invalid academic field value, it should produce a constraint violation")
     void should_invalidate_wrong_academic_field_value(String attribute, String value, String errorMessage) {
         // Given
         EducationRequest request = new EducationRequest(
@@ -114,7 +114,7 @@ class EducationRequestTest {
     }
 
     @Nested
-    @DisplayName("It should invalidate the start date value with a constraint violation")
+    @DisplayName("Given an invalid start date value, it should produce a constraint violation")
     class should_invalidate_wrong_start_date {
 
         @Test
@@ -171,7 +171,7 @@ class EducationRequestTest {
     @CsvSource({
             "endDate, 2050-01-01, this value must be between past and present time"
     })
-    @DisplayName("It should invalidate the start date value with a constraint violation")
+    @DisplayName("Given an invalid end date value, it should produce a constraint violation")
     void should_invalidate_wrong_end_date_value(String attribute, @JavaTimeConversionPattern("yyyy-MM-dd") LocalDate value, String errorMessage) {
         // Given
         EducationRequest request = new EducationRequest(
@@ -195,7 +195,7 @@ class EducationRequestTest {
     }
 
     @Test
-    @DisplayName("It should validate an education request that passes all the constraints")
+    @DisplayName("Given a valid request, it should not produce any constraint violations")
     void should_validate_request_successfully() {
         // Given
         EducationRequest request = new EducationRequest(

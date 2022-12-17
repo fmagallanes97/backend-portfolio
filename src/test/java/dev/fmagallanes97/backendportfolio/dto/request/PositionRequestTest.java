@@ -31,7 +31,7 @@ class PositionRequestTest {
             "role, Eng, this value must be between 4 and 45 characters",
             "role,, this attribute is mandatory"
     })
-    @DisplayName("It should invalidate the role value with a constraint violation")
+    @DisplayName("Given an invalid role value, it should produce a constraint violation")
     void should_invalidate_wrong_role_value(String attribute, String value, String errorMessage) {
         // Given
         PositionRequest request = new PositionRequest(
@@ -58,7 +58,7 @@ class PositionRequestTest {
             "companyName, Inc, this value must be between 4 and 45 characters",
             "companyName,, this attribute is mandatory"
     })
-    @DisplayName("It should invalidate the company name value with a constraint violation")
+    @DisplayName("Given an invalid company name value, it should produce a constraint violation")
     void should_invalidate_wrong_company_name_value(String attribute, String value, String errorMessage) {
         // Given
         PositionRequest request = new PositionRequest(
@@ -81,7 +81,7 @@ class PositionRequestTest {
     }
 
     @Nested
-    @DisplayName("It should invalidate the start date value with a constraint violation")
+    @DisplayName("Given an invalid start date value, it should produce a constraint violation")
     class should_invalidate_wrong_start_date {
 
         @Test
@@ -135,7 +135,7 @@ class PositionRequestTest {
     @CsvSource({
             "endDate, 2050-01-01, this value must be between past and present time"
     })
-    @DisplayName("It should invalidate the end date value with a constraint violation")
+    @DisplayName("Given an invalid end date value, it should produce a constraint violation")
     void should_invalidate_wrong_end_date(String attribute, @JavaTimeConversionPattern("yyyy-MM-dd") LocalDate value, String errorMessage) {
         // Given
         PositionRequest request = new PositionRequest(
@@ -158,7 +158,7 @@ class PositionRequestTest {
     }
 
     @Test
-    @DisplayName("It should validate a position request that passes all the constraints")
+    @DisplayName("Given a valid request, it should not produce any constraint violations")
     void should_validate_request_successfully() {
         // Given
         PositionRequest request = new PositionRequest(

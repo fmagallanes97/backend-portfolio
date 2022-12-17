@@ -33,7 +33,7 @@ class ContactRequestTest {
             "email, neville@edu, this value must be between 12 and 45 characters",
             "email,, this attribute is mandatory"
     })
-    @DisplayName("It should invalidate the email value with a constraint violation")
+    @DisplayName("Given an invalid email value, it should produce a constraint violation")
     void should_invalidate_wrong_email(String attribute, String value, String errorMessage) {
         // Given
         ContactRequest request = new ContactRequest(
@@ -55,7 +55,7 @@ class ContactRequestTest {
     }
 
     @Test
-    @DisplayName("It should validate a contact request that passes all the constraints")
+    @DisplayName("Given a valid request, it should not produce any constraint violations")
     void should_validate_request_successfully() {
         // Given
         ContactRequest request = new ContactRequest(

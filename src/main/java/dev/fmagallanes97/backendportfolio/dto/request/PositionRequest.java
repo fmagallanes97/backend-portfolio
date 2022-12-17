@@ -16,6 +16,7 @@ public record PositionRequest(
         @PastOrPresent(message = "this value must be between past and present time")
         @NotNull(message = "this attribute is mandatory")
         LocalDate startDate,
+        @PastOrPresent(message = "this value must be between past and present time")
         LocalDate endDate
 ) {
 }

@@ -28,13 +28,13 @@ class ContactRequestTest {
     }
 
     @ParameterizedTest(name = "given the email=''{1}'', then invalidate with the errorMessage=''{2}''")
-    @CsvSource({
-            "email, ron.weasley@.hogwarts, this value is not a valid email",
-            "email, neville@edu, this value must be between 12 and 45 characters",
-            "email,, this attribute is mandatory"
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    email | ron.weasley@.hogwarts | this value is not a valid email
+                    email | neville@edu           | this value must be between 12 and 45 characters
+                    email |                       | this attribute is mandatory
+            """)
     @DisplayName("Given an invalid email value, it should produce a constraint violation")
-    void should_invalidate_wrong_email(String attribute, String value, String errorMessage) {
+    void should_throw_constraint_violation_for_invalid_email_value(String attribute, String value, String errorMessage) {
         // Given
         ContactRequest request = new ContactRequest(
                 value,
@@ -48,8 +48,8 @@ class ContactRequestTest {
         // Then
         assertThat(violations).hasSize(1);
 
+        // And
         ConstraintViolation<ContactRequest> violation = violations.iterator().next();
-
         assertThat(violation.getPropertyPath().toString()).hasToString(attribute);
         assertThat(violation.getMessage()).isEqualTo(errorMessage);
     }

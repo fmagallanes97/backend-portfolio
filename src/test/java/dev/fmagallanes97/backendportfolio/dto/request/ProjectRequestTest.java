@@ -30,11 +30,11 @@ class ProjectRequestTest {
     }
 
     @ParameterizedTest(name = "given the title=''{1}'', then invalidate with the errorMessage=''{2}''")
-    @CsvSource({
-            "title, The, this value must be between 4 and 45 characters",
-            "title, The NextGen project: Revolutionizing industry with advanced AI and robotics, this value must be between 4 and 45 characters",
-            "title,, this attribute is mandatory"
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    title | The NextGen project: Revolutionizing industry with advanced AI and robotics. | this value must be between 4 and 45 characters
+                    title | The | this value must be between 4 and 45 characters
+                    title |     | this attribute is mandatory
+            """)
     @DisplayName("Given an invalid title value, it should produce a constraint violation")
     void should_throw_constraint_violation_for_invalid_title_value(String attribute, String value, String errorMessage) {
         // Given
@@ -60,17 +60,11 @@ class ProjectRequestTest {
     }
 
     @ParameterizedTest(name = "given the description=''{1}'', then invalidate with the errorMessage=''{2}''")
-    @CsvSource({
-            "description, Abc, this value must be between 12 and 255 characters",
-            "description," +
-                    "'The NextGen project is a groundbreaking new system that combines advanced artificial " +
-                    "intelligence with cutting-edge robotics to create a fully automated solution for a wide range of" +
-                    " industries. Our innovative technology has the potential to revolutionize the way businesses" +
-                    " operate, improving efficiency and productivity while reducing costs and increasing profits.'" +
-                    "" +
-                    ", this value must be between 12 and 255 characters",
-            "description,, this attribute is mandatory"
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    description | The NextGen project is a groundbreaking new system that combines advanced artificial intelligence with cutting-edge robotics to create a fully automated solution for a wide range of industries. Our innovative technology has the potential to revolutionize the way businesses operate, improving efficiency and productivity while reducing costs and increasing profits. | this value must be between 12 and 255 characters
+                    description | NextGen | this value must be between 12 and 255 characters
+                    description |         | this attribute is mandatory
+            """)
     @DisplayName("Given an invalid description value, it should produce a constraint violation")
     void should_throw_constraint_violation_for_invalid_description_value(String attribute, String value, String errorMessage) {
         // Given
@@ -96,9 +90,9 @@ class ProjectRequestTest {
     }
 
     @ParameterizedTest(name = "given the startDate=''{1}'', then invalidate with the errorMessage=''{2}''")
-    @CsvSource({
-            "startDate, 2050-01-01, this value must be between past and present time"
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    startDate | 2050-01-01 | this value must be between past and present time
+            """)
     @DisplayName("Given an invalid start date value, it should produce a constraint violation")
     void should_throw_constraint_violation_for_invalid_start_date_value(String attribute, @JavaTimeConversionPattern("yyyy-MM-dd") LocalDate value, String errorMessage) {
         // Given
@@ -124,10 +118,10 @@ class ProjectRequestTest {
     }
 
     @ParameterizedTest(name = "given the website=''{1}'', then invalidate with the errorMessage=''{2}''")
-    @CsvSource({
-            "website, 'nextgenproject.com', this value is not a valid URL. It must contain an HTTPS protocol",
-            "website, https://a.i, this value must be between 12 and 255 characters",
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    website | nextgenproject.com | this value is not a valid URL. It must contain an HTTPS protocol
+                    website | https://a.i        | this value must be between 12 and 255 characters
+            """)
     @DisplayName("Given an invalid website value, it should produce a constraint violation")
     void should_throw_constraint_violation_for_invalid_website_value(String attribute, String value, String errorMessage) {
         // Given
@@ -153,10 +147,10 @@ class ProjectRequestTest {
     }
 
     @ParameterizedTest(name = "given the repositoryURL=''{1}'', then invalidate with the errorMessage=''{2}''")
-    @CsvSource({
-            "repositoryURL, 'nextgenproject.com', this value is not a valid URL. It must contain an HTTPS protocol",
-            "repositoryURL, 'https://i.a', this value must be between 12 and 255 characters"
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    repositoryURL | nextgenproject.com | this value is not a valid URL. It must contain an HTTPS protocol
+                    repositoryURL | https://i.a        | this value must be between 12 and 255 characters
+            """)
     @DisplayName("Given an invalid repositoryURL value, it should produce a constraint violation")
     void should_throw_constraint_violation_for_invalid_repository_url_value(String attribute, String value, String errorMessage) {
         // Given
@@ -182,10 +176,10 @@ class ProjectRequestTest {
     }
 
     @ParameterizedTest(name = "given the previewImageURL=''{1}'', then invalidate with the errorMessage=''{2}''")
-    @CsvSource({
-            "previewImageURL, 'nextgenproject.com', this value is not a valid URL. It must contain an HTTPS protocol",
-            "previewImageURL, 'https://i.a', this value must be between 12 and 255 characters"
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    previewImageURL | nextgenproject.com | this value is not a valid URL. It must contain an HTTPS protocol
+                    previewImageURL | https://i.a        | this value must be between 12 and 255 characters
+            """)
     @DisplayName("Given an invalid previewImageURL value, it should produce a constraint violation")
     void should_throw_constraint_violation_for_invalid_preview_image_url_value(String attribute, String value, String errorMessage) {
         // Given

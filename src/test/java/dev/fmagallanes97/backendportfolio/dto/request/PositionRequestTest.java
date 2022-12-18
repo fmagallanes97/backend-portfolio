@@ -27,12 +27,13 @@ class PositionRequestTest {
     }
 
     @ParameterizedTest(name = "given the role=''{1}'', then invalidate with the errorMessage=''{2}''")
-    @CsvSource({
-            "role, Eng, this value must be between 4 and 45 characters",
-            "role,, this attribute is mandatory"
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    role | Lead Software Architect and Full-Stack Developer | this value must be between 4 and 45 characters
+                    role | Eng | this value must be between 4 and 45 characters
+                    role |     | this attribute is mandatory
+            """)
     @DisplayName("Given an invalid role value, it should produce a constraint violation")
-    void should_invalidate_wrong_role_value(String attribute, String value, String errorMessage) {
+    void should_throw_constraint_violation_for_invalid_role_value(String attribute, String value, String errorMessage) {
         // Given
         PositionRequest request = new PositionRequest(
                 value,
@@ -47,26 +48,27 @@ class PositionRequestTest {
         // Then
         assertThat(violations).hasSize(1);
 
+        // And
         ConstraintViolation<PositionRequest> violation = violations.iterator().next();
-
         assertThat(violation.getPropertyPath().toString()).hasToString(attribute);
         assertThat(violation.getMessage()).isEqualTo(errorMessage);
     }
 
     @ParameterizedTest(name = "given the companyName=''{1}'', then invalidate the with errorMessage=''{2}''")
-    @CsvSource({
-            "companyName, Inc, this value must be between 4 and 45 characters",
-            "companyName,, this attribute is mandatory"
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    companyName | Next-Generation Software Development and Consulting Company | this value must be between 4 and 45 characters
+                    companyName | Inc | this value must be between 4 and 45 characters
+                    companyName |     | this attribute is mandatory
+            """)
     @DisplayName("Given an invalid company name value, it should produce a constraint violation")
-    void should_invalidate_wrong_company_name_value(String attribute, String value, String errorMessage) {
+    void should_throw_constraint_violation_for_invalid_company_name_value(String attribute, String value, String errorMessage) {
         // Given
         PositionRequest request = new PositionRequest(
                 "Software Engineer",
                 value,
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2021, 1, 1)
-                );
+        );
 
         // When
         Set<ConstraintViolation<PositionRequest>> violations = validator.validate(request);
@@ -74,19 +76,19 @@ class PositionRequestTest {
         // Then
         assertThat(violations).hasSize(1);
 
+        // And
         ConstraintViolation<PositionRequest> violation = violations.iterator().next();
-
         assertThat(violation.getPropertyPath().toString()).hasToString(attribute);
         assertThat(violation.getMessage()).isEqualTo(errorMessage);
     }
 
     @Nested
     @DisplayName("Given an invalid start date value, it should produce a constraint violation")
-    class should_invalidate_wrong_start_date {
+    class should_throw_constraint_violation_for_invalid_start_date {
 
         @Test
         @DisplayName("given the startDate='2050-1-1', then invalidate with the errorMessage='this value must be between past and present time'")
-        void should_invalidate_start_date_future_value() {
+        void future_value() {
             // Given
             PositionRequest request = new PositionRequest(
                     "Software Engineer",
@@ -101,15 +103,15 @@ class PositionRequestTest {
             // Then
             assertThat(violations).hasSize(1);
 
+            // And
             ConstraintViolation<PositionRequest> violation = violations.iterator().next();
-
             assertThat(violation.getPropertyPath().toString()).hasToString("startDate");
             assertThat(violation.getMessage()).isEqualTo("this value must be between past and present time");
         }
 
         @Test
         @DisplayName("given the startDate='null', then invalidate with the errorMessage='this attribute is mandatory'")
-        void should_invalidate_start_date_null_value() {
+        void null_value() {
             // Given
             PositionRequest request = new PositionRequest(
                     "Software Engineer",
@@ -124,19 +126,19 @@ class PositionRequestTest {
             // Then
             assertThat(violations).hasSize(1);
 
+            // And
             ConstraintViolation<PositionRequest> violation = violations.iterator().next();
-
             assertThat(violation.getPropertyPath().toString()).hasToString("startDate");
             assertThat(violation.getMessage()).isEqualTo("this attribute is mandatory");
         }
     }
 
     @ParameterizedTest(name = "given the endDate=''{1}'', then invalidate with the errorMessage=''{2}''")
-    @CsvSource({
-            "endDate, 2050-01-01, this value must be between past and present time"
-    })
+    @CsvSource(delimiter = '|', textBlock = """
+                    endDate | 2050-01-01 | this value must be between past and present time
+            """)
     @DisplayName("Given an invalid end date value, it should produce a constraint violation")
-    void should_invalidate_wrong_end_date(String attribute, @JavaTimeConversionPattern("yyyy-MM-dd") LocalDate value, String errorMessage) {
+    void should_throw_constraint_violation_for_invalid_end_date(String attribute, @JavaTimeConversionPattern("yyyy-MM-dd") LocalDate value, String errorMessage) {
         // Given
         PositionRequest request = new PositionRequest(
                 "Software Engineer",
@@ -151,8 +153,8 @@ class PositionRequestTest {
         // Then
         assertThat(violations).hasSize(1);
 
+        // And
         ConstraintViolation<PositionRequest> violation = violations.iterator().next();
-
         assertThat(violation.getPropertyPath().toString()).hasToString(attribute);
         assertThat(violation.getMessage()).isEqualTo(errorMessage);
     }

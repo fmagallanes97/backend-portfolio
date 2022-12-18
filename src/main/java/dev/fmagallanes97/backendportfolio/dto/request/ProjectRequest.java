@@ -11,19 +11,19 @@ public record ProjectRequest(
         @Size(min = 4, max = 45, message = "this value must be between 4 and 45 characters")
         @NotEmpty(message = "this attribute is mandatory")
         String title,
-        @Size(min = 4, max = 255, message = "this value must be between 4 and 255 characters")
+        @Size(min = 12, max = 255, message = "this value must be between 12 and 255 characters")
         @NotEmpty(message = "this attribute is mandatory")
         String description,
         @PastOrPresent(message = "this value must be between past and present time")
         LocalDate startDate,
-        @Size(min = 4, max = 255, message = "this value must be between 4 and 255 characters")
-        @URL(message = "this value is not a valid URL")
+        @Size(min = 12, max = 255, message = "this value must be between 12 and 255 characters")
+        @URL(protocol = "https", message = "this value is not a valid URL. It must contain an HTTPS protocol")
         String website,
-        @Size(min = 4, max = 255, message = "this value must be between 4 and 255 characters")
-        @URL(message = "this value is not a valid URL")
+        @Size(min = 12, max = 255, message = "this value must be between 12 and 255 characters")
+        @URL(protocol = "https", message = "this value is not a valid URL. It must contain an HTTPS protocol")
         String repositoryURL,
-        @Size(min = 4, max = 255, message = "this value must be between 4 and 255 characters")
-        @URL(message = "this value is not a valid URL")
+        @Size(min = 12, max = 255, message = "this value must be between 12 and 255 characters")
+        @URL(protocol = "https", message = "this value is not a valid URL. It must contain an HTTPS protocol")
         String previewImageURL
 ) {
 }

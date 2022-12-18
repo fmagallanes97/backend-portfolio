@@ -1,8 +1,8 @@
 package dev.fmagallanes97.backendportfolio.dto.mapper;
 
 import dev.fmagallanes97.backendportfolio.model.Skill;
-import dev.fmagallanes97.backendportfolio.dto.SkillRequest;
-import dev.fmagallanes97.backendportfolio.dto.SkillResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.SkillRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.SkillResponse;
 import org.mapstruct.Mapper;
 
 import java.util.List;

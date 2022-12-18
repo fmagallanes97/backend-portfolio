@@ -1,8 +1,8 @@
 package dev.fmagallanes97.backendportfolio.service;
 
 import dev.fmagallanes97.backendportfolio.repository.ContactRepository;
-import dev.fmagallanes97.backendportfolio.dto.ContactRequest;
-import dev.fmagallanes97.backendportfolio.dto.ContactResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.ContactRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.ContactResponse;
 import dev.fmagallanes97.backendportfolio.dto.mapper.ContactMapper;
 import dev.fmagallanes97.backendportfolio.model.Contact;
 import dev.fmagallanes97.backendportfolio.model.Resume;

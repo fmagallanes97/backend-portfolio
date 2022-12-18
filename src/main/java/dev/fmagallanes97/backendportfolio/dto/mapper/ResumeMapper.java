@@ -1,8 +1,8 @@
 package dev.fmagallanes97.backendportfolio.dto.mapper;
 
 import dev.fmagallanes97.backendportfolio.model.Resume;
-import dev.fmagallanes97.backendportfolio.dto.ResumeRequest;
-import dev.fmagallanes97.backendportfolio.dto.ResumeResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.ResumeRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.ResumeResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {

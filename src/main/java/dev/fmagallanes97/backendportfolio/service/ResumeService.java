@@ -2,8 +2,8 @@ package dev.fmagallanes97.backendportfolio.service;
 
 import dev.fmagallanes97.backendportfolio.model.Resume;
 import dev.fmagallanes97.backendportfolio.repository.ResumeRepository;
-import dev.fmagallanes97.backendportfolio.dto.ResumeRequest;
-import dev.fmagallanes97.backendportfolio.dto.ResumeResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.ResumeRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.ResumeResponse;
 import dev.fmagallanes97.backendportfolio.dto.mapper.ResumeMapper;
 import dev.fmagallanes97.backendportfolio.exception.Error;
 import dev.fmagallanes97.backendportfolio.exception.ResourceNotFoundException;

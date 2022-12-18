@@ -1,8 +1,8 @@
 package dev.fmagallanes97.backendportfolio.service;
 
 import dev.fmagallanes97.backendportfolio.repository.EducationRepository;
-import dev.fmagallanes97.backendportfolio.dto.EducationRequest;
-import dev.fmagallanes97.backendportfolio.dto.EducationResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.EducationRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.EducationResponse;
 import dev.fmagallanes97.backendportfolio.dto.mapper.EducationMapper;
 import dev.fmagallanes97.backendportfolio.model.Education;
 import dev.fmagallanes97.backendportfolio.model.Resume;

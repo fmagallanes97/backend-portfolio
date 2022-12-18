@@ -1,8 +1,8 @@
 package dev.fmagallanes97.backendportfolio.dto.mapper;
 
 import dev.fmagallanes97.backendportfolio.model.PosResponsibility;
-import dev.fmagallanes97.backendportfolio.dto.PosResponsibilityRequest;
-import dev.fmagallanes97.backendportfolio.dto.PosResponsibilityResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.PosResponsibilityRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.PosResponsibilityResponse;
 import org.mapstruct.Mapper;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package dev.fmagallanes97.backendportfolio.dto.mapper;
 
 import dev.fmagallanes97.backendportfolio.model.Education;
-import dev.fmagallanes97.backendportfolio.dto.EducationRequest;
-import dev.fmagallanes97.backendportfolio.dto.EducationResponse;
+import dev.fmagallanes97.backendportfolio.dto.request.EducationRequest;
+import dev.fmagallanes97.backendportfolio.dto.response.EducationResponse;
 import org.mapstruct.Mapper;
 
 import java.util.List;

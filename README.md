@@ -2,8 +2,7 @@
 
 This project is a resume/portfolio REST API built with Spring Boot. It provides a set of endpoints for managing and storing information about a user's work experience, education, skills, and other relevant details that make up a typical resume. The API is designed to be easy to use and integrate into a frontend application, allowing users to create, maintain and edit their resume.
 
-You can create, read, update, and delete your resume information. The joined data is stored using a persistent storage solution
-, such as MySQL database.
+You can create, read, update, and delete your resume information. The entered data is stored using a persistent storage solution, such as MySQL database.
 
 ## Requirements
 
@@ -64,16 +63,16 @@ To check if the application is running, you can access the API at http://localho
 
 The project is organized into the following directories and packages:
 
-| Directory/Package | Description |
-|-------------------|-------------|
-| src/main/java/com/example/app/repository | Contains the repository classes for accessing and managing the resume data in the persistent storage |
-| src/main/java/com/example/app/model | Contains the domain model classes, representing the entities and their relationships |
-| src/main/java/com/example/app/controller | Contains the controller classes, handling the incoming HTTP requests and mapping them to the appropriate repository methods |
-| src/main/java/com/example/app/service | Contains the service classes, implementing the business logic and interacting with the repository classes |
-| src/main/resources | Configuration files and other resources |
-| src/test/java/com/example/app | Unit and integration tests for the project, organized by layer |
-| src/test/resources | Test-specific resources, such as test data and configuration files |
-| docker | Docker configuration files for running the project with Docker |
+| Directory/Package                             | Description |
+|-----------------------------------------------|-------------|
+| src/main/java/dev/.../...portfolio/repository | Contains the repository classes for accessing and managing the resume data in the persistent storage |
+| src/main/java/dev/.../...portfolio/model      | Contains the domain model classes, representing the entities and their relationships |
+| src/main/java/dev/.../...portfolio/controller | Contains the controller classes, handling the incoming HTTP requests and mapping them to the appropriate repository methods |
+| src/main/java/dev/.../...portfolio/service    | Contains the service classes, implementing the business logic and interacting with the repository classes |
+| src/main/resources                            | Configuration files and other resources |
+| src/test/java/dev/.../...portfolio        | Unit and integration tests for the project, organized by layer |
+| src/test/resources                            | Test-specific resources, such as test data and configuration files |
+| docker                                        | Docker configuration files for running the project with Docker |
 
 ## Recommended IDEs for Java
 

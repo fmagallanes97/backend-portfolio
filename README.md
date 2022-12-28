@@ -74,6 +74,14 @@ The project is organized into the following directories and packages:
 | src/test/resources                            | Test-specific resources, such as test data and configuration files |
 | docker                                        | Docker configuration files for running the project with Docker |
 
+## API Documentation
+
+To view the documentation for the API, you can access the following URL:
+
+http://localhost:8080/api/v1/doc
+
+This will display the API documentation, which includes a list of available endpoints, the HTTP methods supported by each endpoint, and a description of the request and response payloads. You can use this documentation to learn more about the API and how to use it.
+
 ## Recommended IDEs for Java
 
 There are many free IDEs that you can use for Java development. Some popular options include:

@@ -15,7 +15,7 @@ public class Skill {
     private Long id;
     private String name;
     @ManyToOne
-    @JoinColumn(name = "skill_type_id")
+    @JoinColumn(name = "type_id")
     private SkillType type;
     @ManyToOne
     @JoinColumn(name = "resume_id")

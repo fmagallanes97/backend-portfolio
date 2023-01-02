@@ -1,7 +1,7 @@
 package dev.fmagallanes97.backendportfolio.dto.request;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public record ResumeRequest(
         @Size(min = 2, max = 45, message = "this value must be between 2 and 45 characters")

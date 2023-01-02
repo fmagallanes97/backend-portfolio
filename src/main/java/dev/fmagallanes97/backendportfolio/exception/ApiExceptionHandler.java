@@ -24,7 +24,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ErrorResponse(ex.getTitle(), ex.getDescription()));
     }
 
-    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<InvalidArgumentResponse> arguments = ex.getBindingResult().getFieldErrors().stream()
                 .map(error -> new InvalidArgumentResponse(error.getField(), error.getDefaultMessage())).toList();
@@ -33,7 +32,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ErrorResponse(Error.VALIDATION_ERROR.getTitle(), Error.VALIDATION_ERROR.getDescription(), arguments));
     }
 
-    @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return ResponseEntity
                 .status(Error.INVALID_JSON.getStatus())

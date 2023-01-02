@@ -31,7 +31,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

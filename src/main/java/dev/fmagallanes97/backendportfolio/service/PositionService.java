@@ -1,18 +1,20 @@
 package dev.fmagallanes97.backendportfolio.service;
 
-import dev.fmagallanes97.backendportfolio.model.Position;
-import dev.fmagallanes97.backendportfolio.repository.PositionRepository;
+import dev.fmagallanes97.backendportfolio.dto.mapper.PositionMapper;
 import dev.fmagallanes97.backendportfolio.dto.request.PositionRequest;
 import dev.fmagallanes97.backendportfolio.dto.response.PositionResponse;
-import dev.fmagallanes97.backendportfolio.dto.mapper.PositionMapper;
-import dev.fmagallanes97.backendportfolio.model.Resume;
-import dev.fmagallanes97.backendportfolio.repository.ResumeRepository;
-import dev.fmagallanes97.backendportfolio.exception.Error;
 import dev.fmagallanes97.backendportfolio.exception.ResourceNotFoundException;
+import dev.fmagallanes97.backendportfolio.model.Position;
+import dev.fmagallanes97.backendportfolio.model.Resume;
+import dev.fmagallanes97.backendportfolio.repository.PositionRepository;
+import dev.fmagallanes97.backendportfolio.repository.ResumeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static dev.fmagallanes97.backendportfolio.exception.ErrorResource.JOB_POSITION;
+import static dev.fmagallanes97.backendportfolio.exception.ErrorResource.RESUME;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +25,7 @@ public class PositionService {
     private final PositionRepository positionRepository;
 
     public PositionResponse save(Long resumeId, PositionRequest positionRequest) {
-        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> new ResourceNotFoundException(RESUME.getName(), resumeId));
         Position position = positionMapper.toEntity(positionRequest);
 
         resume.addPosition(position);
@@ -34,10 +34,7 @@ public class PositionService {
     }
 
     public PositionResponse findById(Long positionId) {
-        Position position = positionRepository.findById(positionId).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
-
+        Position position = positionRepository.findById(positionId).orElseThrow(() -> new ResourceNotFoundException(JOB_POSITION.getName(), positionId));
         return positionMapper.toResponse(position);
     }
 
@@ -46,9 +43,7 @@ public class PositionService {
     }
 
     public PositionResponse updateById(Long positionId, PositionRequest positionRequest) {
-        Position position = positionRepository.findById(positionId).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
+        Position position = positionRepository.findById(positionId).orElseThrow(() -> new ResourceNotFoundException(JOB_POSITION.getName(), positionId));
 
         positionMapper.update(positionRequest, position);
 
@@ -56,12 +51,9 @@ public class PositionService {
     }
 
     public void deleteById(Long positionId) {
-        Position position = positionRepository.findById(positionId).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
-        Resume resume = resumeRepository.findById(position.getResume().getId()).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
+        Position position = positionRepository.findById(positionId).orElseThrow(() -> new ResourceNotFoundException(JOB_POSITION.getName(), positionId));
+        Long resumeId = position.getResume().getId();
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> new ResourceNotFoundException(RESUME.getName(), resumeId));
 
         resume.removePosition(position);
 

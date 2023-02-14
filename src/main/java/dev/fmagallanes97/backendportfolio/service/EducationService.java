@@ -1,18 +1,20 @@
 package dev.fmagallanes97.backendportfolio.service;
 
-import dev.fmagallanes97.backendportfolio.repository.EducationRepository;
+import dev.fmagallanes97.backendportfolio.dto.mapper.EducationMapper;
 import dev.fmagallanes97.backendportfolio.dto.request.EducationRequest;
 import dev.fmagallanes97.backendportfolio.dto.response.EducationResponse;
-import dev.fmagallanes97.backendportfolio.dto.mapper.EducationMapper;
+import dev.fmagallanes97.backendportfolio.exception.ResourceNotFoundException;
 import dev.fmagallanes97.backendportfolio.model.Education;
 import dev.fmagallanes97.backendportfolio.model.Resume;
+import dev.fmagallanes97.backendportfolio.repository.EducationRepository;
 import dev.fmagallanes97.backendportfolio.repository.ResumeRepository;
-import dev.fmagallanes97.backendportfolio.exception.Error;
-import dev.fmagallanes97.backendportfolio.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static dev.fmagallanes97.backendportfolio.exception.ErrorResource.EDUCATION;
+import static dev.fmagallanes97.backendportfolio.exception.ErrorResource.RESUME;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +25,7 @@ public class EducationService {
     private final EducationRepository educationRepository;
 
     public EducationResponse save(Long resumeId, EducationRequest educationRequest) {
-        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> new ResourceNotFoundException(RESUME.getName(), resumeId));
         Education education = educationMapper.toEntity(educationRequest);
 
         resume.addEducation(education);
@@ -34,10 +34,7 @@ public class EducationService {
     }
 
     public EducationResponse findById(Long educationId) {
-        Education education = educationRepository.findById(educationId).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
-
+        Education education = educationRepository.findById(educationId).orElseThrow(() -> new ResourceNotFoundException(EDUCATION.getName(), educationId));
         return educationMapper.toResponse(education);
     }
 
@@ -46,9 +43,7 @@ public class EducationService {
     }
 
     public EducationResponse updateById(Long educationId, EducationRequest educationRequest) {
-        Education education = educationRepository.findById(educationId).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
+        Education education = educationRepository.findById(educationId).orElseThrow(() -> new ResourceNotFoundException(EDUCATION.getName(), educationId));
 
         educationMapper.update(educationRequest, education);
 
@@ -56,12 +51,9 @@ public class EducationService {
     }
 
     public void deleteById(Long educationId) {
-        Education education = educationRepository.findById(educationId).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
-        Resume resume = resumeRepository.findById(education.getResume().getId()).orElseThrow(() -> {
-            throw new ResourceNotFoundException(Error.RESOURCE_NOT_FOUND);
-        });
+        Education education = educationRepository.findById(educationId).orElseThrow(() -> new ResourceNotFoundException(EDUCATION.getName(), educationId));
+        Long resumeId = education.getResume().getId();
+        Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> new ResourceNotFoundException(RESUME.getName(), resumeId));
 
         resume.removeEducation(education);
 

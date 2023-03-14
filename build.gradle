@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id "jacoco"
     id "org.sonarqube" version "3.5.0.2730"
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'dev.fmagallanes97'
@@ -14,6 +15,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
@@ -22,6 +24,24 @@ repositories {
 
 ext {
     set('testcontainersVersion', "1.17.4")
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
 }
 
 dependencies {
@@ -40,6 +60,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:mysql'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:3.3.2'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:3.0.0'
 }
 
 dependencyManagement {

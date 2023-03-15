@@ -18,8 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -78,14 +77,20 @@ class ContactControllerIT extends AbstractIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content("""
                                 {
-                                  "email": "",
+                                  "email": "john.doe_gmail.com",
                                   "githubProfileURL": "",
                                   "linkedinProfileURL": ""
                                 }
                                 """))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE))
+                .andExpect(jsonPath("$.type").value("https://example.com/error/validation-error"))
+                .andExpect(jsonPath("$.title").value("Invalid Request Body"))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.detail").value("The request body contains invalid or missing parameters that do not meet the required constraints. Please check the documentation for the correct parameter"))
+                .andExpect(jsonPath("$.errors[0].name").value("email"))
+                .andExpect(jsonPath("$.errors[0].reason").value("this value is not a valid email"));
     }
 
     @Test
@@ -105,7 +110,12 @@ class ContactControllerIT extends AbstractIntegrationTest {
         mockMvc.perform(get("/contact/9999"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE))
+                .andExpect(jsonPath("$.type").value("https://example.com/error/resource-not-found"))
+                .andExpect(jsonPath("$.title").value("Contact Not found"))
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.detail").value("The contact with ID 9999 cannot be found in the database"))
+                .andExpect(jsonPath("$.id").value(9999));
     }
 
     @Test
@@ -139,7 +149,14 @@ class ContactControllerIT extends AbstractIntegrationTest {
                                 }
                                 """))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE))
+                .andExpect(jsonPath("$.type").value("https://example.com/error/validation-error"))
+                .andExpect(jsonPath("$.title").value("Invalid Request Body"))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.detail").value("The request body contains invalid or missing parameters that do not meet the required constraints. Please check the documentation for the correct parameter"))
+                .andExpect(jsonPath("$.errors[0].name").value("email"))
+                .andExpect(jsonPath("$.errors[0].reason").value("this attribute is mandatory"));
     }
 
     @Test
@@ -158,6 +175,11 @@ class ContactControllerIT extends AbstractIntegrationTest {
         mockMvc.perform(delete("/contact/9999"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE))
+                .andExpect(jsonPath("$.type").value("https://example.com/error/resource-not-found"))
+                .andExpect(jsonPath("$.title").value("Contact Not found"))
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.detail").value("The contact with ID 9999 cannot be found in the database"))
+                .andExpect(jsonPath("$.id").value(9999));
     }
 }

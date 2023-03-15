@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    username: test
+    password: test
+    url: jdbc:tc:mysql:8.0.31:///test_db
+  jpa.hibernate.ddl-auto: validate
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: '/api/v1'

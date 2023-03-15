@@ -30,7 +30,7 @@ public class EducationService {
 
         resume.addEducation(education);
 
-        return educationMapper.toResponse(education);
+        return educationMapper.toResponse(educationRepository.save(education));
     }
 
     public EducationResponse findById(Long educationId) {

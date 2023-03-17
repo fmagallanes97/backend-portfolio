@@ -1,12 +1,8 @@
 package dev.fmagallanes97.backendportfolio.controller;
 
 import dev.fmagallanes97.backendportfolio.AbstractIntegrationTest;
-import dev.fmagallanes97.backendportfolio.dto.request.ResumeRequest;
-import dev.fmagallanes97.backendportfolio.service.ResumeService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -21,18 +17,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.profiles.active=test")
 class EducationControllerIT extends AbstractIntegrationTest {
 
     MockMvc mockMvc;
 
-    @BeforeAll
-    void setUpResume(@Autowired ResumeService service) {
-        ResumeRequest request = new ResumeRequest("John", "Doe", "Experienced Software Developer", "I am a highly skilled software developer with 5 years of experience in Java development.");
-        service.save(request);
-    }
+    final Long RESUME_ID = 1L;
+    final Long EDUCATION_ID = 1L;
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
@@ -42,50 +33,56 @@ class EducationControllerIT extends AbstractIntegrationTest {
     }
 
     @Test()
-    @Order(1)
     @DisplayName("Should verify that at least one resume can be retrieved")
     void exists_at_least_one_resume() throws Exception {
-        mockMvc.perform(get("/resume/1"))
+        mockMvc.perform(get("/resume/" + RESUME_ID))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test
-    @Order(2)
     @DisplayName("Should verify that POST method works correctly")
     void education_creation_works() throws Exception {
-        mockMvc.perform(post("/resume/1/education")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("""
-                        {
-                          "degree": "Bachelor's degree",
-                          "school": "Example University",
-                          "academicField": "Computer Science",
-                          "startDate": "2018-09-01",
-                          "endDate": "2022-06-30"
-                        }
-                        """))
+        mockMvc.perform(post("/resume/" + RESUME_ID + "/education")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content("""
+                                {
+                                  "degree": "Bachelor's degree",
+                                  "school": "Example University",
+                                  "academicField": "Computer Science",
+                                  "startDate": "2018-09-01",
+                                  "endDate": "2022-06-30"
+                                }
+                                """))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+
+        mockMvc.perform(get("/resume/" + RESUME_ID))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.education[?(@.degree == 'Bachelor\\'s degree')]").exists())
+                .andExpect(jsonPath("$.education[?(@.school == 'Example University')]").exists())
+                .andExpect(jsonPath("$.education[?(@.academicField == 'Computer Science')]").exists())
+                .andExpect(jsonPath("$.education[?(@.startDate == '2018-09-01')]").exists())
+                .andExpect(jsonPath("$.education[?(@.endDate == '2022-06-30')]").exists());
     }
 
     @Test
-    @Order(3)
     @DisplayName("Should verify that POST method does not work correctly")
     void education_creation_does_not_work() throws Exception {
-        mockMvc.perform(post("/resume/1/education")
+        mockMvc.perform(post("/resume/" + RESUME_ID + "/education")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content("""
-                    {
-                      "degree": "Bachelor's degree",
-                      "school": "Example University",
-                      "academic_field": "Computer Science",
-                      "startDate": "2018-09-01",
-                      "endDate": "2022-06-30"
-                    }
-                    """))
+                                {
+                                  "degree": "Bachelor's degree",
+                                  "school": "Example University",
+                                  "academic_field": "Computer Science",
+                                  "startDate": "2018-09-01",
+                                  "endDate": "2022-06-30"
+                                }
+                                """))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE))
@@ -98,35 +95,32 @@ class EducationControllerIT extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(4)
     @DisplayName("Should verify that GET method retrieves the desired resource")
     void education_retrieving_one_works() throws Exception {
-        mockMvc.perform(get("/education/1"))
+        mockMvc.perform(get("/education/" + EDUCATION_ID))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test
-    @Order(5)
     @DisplayName("Should verify that the path variable is not found for GET method")
     void education_retrieving_one_does_not_work() throws Exception {
-        mockMvc.perform(get("/education/9999"))
+        mockMvc.perform(get("/education/" + -1))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE))
                 .andExpect(jsonPath("$.type").value("https://example.com/error/resource-not-found"))
                 .andExpect(jsonPath("$.title").value("Education Not found"))
                 .andExpect(jsonPath("$.status").value(404))
-                .andExpect(jsonPath("$.detail").value("The education with ID 9999 cannot be found in the database"))
-                .andExpect(jsonPath("$.id").value(9999));
+                .andExpect(jsonPath("$.detail").value("The education with ID -1 cannot be found in the database"))
+                .andExpect(jsonPath("$.id").value(-1));
     }
 
     @Test
-    @Order(6)
     @DisplayName("Should verify that GET method retrieves all the desired resources")
     void education_retrieving_all_works() throws Exception {
-        mockMvc.perform(get("/resume/1/education"))
+        mockMvc.perform(get("/resume/" + RESUME_ID + "/education"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -134,39 +128,37 @@ class EducationControllerIT extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(7)
     @DisplayName("Should verify that PUT method updates the desired resource")
     void education_updating_works() throws Exception {
-        mockMvc.perform(put("/education/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("""
-                        {
-                          "degree": "Bachelor's degree",
-                          "school": "University",
-                          "academicField": "Computer Science",
-                          "startDate": "2018-09-01",
-                          "endDate": ""
-                        }
-                        """))
+        mockMvc.perform(put("/education/" + EDUCATION_ID)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content("""
+                                {
+                                  "degree": "Bachelor's degree",
+                                  "school": "University",
+                                  "academicField": "Computer Science",
+                                  "startDate": "2018-09-01",
+                                  "endDate": ""
+                                }
+                                """))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test
-    @Order(8)
     @DisplayName("Should verify that the request body infringe the constrains for PUT method")
     void education_updating_does_not_work() throws Exception {
-        mockMvc.perform(put("/education/1")
+        mockMvc.perform(put("/education/" + EDUCATION_ID)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content("""
-                        {
-                          "degree": "Bachelor's degree",
-                          "academicField": "Computer Science",
-                          "startDate": "2018-09-01",
-                          "endDate": ""
-                        }
-                        """))
+                                {
+                                  "degree": "Bachelor's degree",
+                                  "academicField": "Computer Science",
+                                  "startDate": "2018-09-01",
+                                  "endDate": ""
+                                }
+                                """))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE))
@@ -179,26 +171,23 @@ class EducationControllerIT extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(9)
     @DisplayName("Should verify that DELETE method works correctly")
     void education_deleting_works() throws Exception {
-        mockMvc.perform(delete("/education/1"))
+        mockMvc.perform(delete("/education/" + EDUCATION_ID))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    @Order(10)
     @DisplayName("Should verify that the path variable is not found for DELETE method")
     void education_deleting_does_not_work() throws Exception {
-        mockMvc.perform(delete("/education/9999"))
+        mockMvc.perform(delete("/education/" + -1))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE))
                 .andExpect(jsonPath("$.type").value("https://example.com/error/resource-not-found"))
                 .andExpect(jsonPath("$.title").value("Education Not found"))
-                .andExpect(jsonPath("$.detail").value("The education with ID 9999 cannot be found in the database"))
-                .andExpect(jsonPath("$.instance").value("/education/9999"))
-                .andExpect(jsonPath("$.id").value(9999));
+                .andExpect(jsonPath("$.detail").value("The education with ID -1 cannot be found in the database"))
+                .andExpect(jsonPath("$.id").value(-1));
     }
 }

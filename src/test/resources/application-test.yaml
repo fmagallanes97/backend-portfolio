@@ -1,8 +1,6 @@
 spring:
   datasource:
-    username: test
-    password: test
-    url: jdbc:tc:mysql:8.0.31:///test_db
+    url: jdbc:tc:mysql:8.0.31:///
   jpa.hibernate.ddl-auto: validate
   mvc:
     throw-exception-if-no-handler-found: true

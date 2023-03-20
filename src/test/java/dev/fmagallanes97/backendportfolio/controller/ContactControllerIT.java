@@ -22,7 +22,8 @@ class ContactControllerIT extends AbstractIntegrationTest {
 
     MockMvc mockMvc;
 
-    final Long RESUME_ID = 1L;
+    final int RESUME_ID = 1;
+    final int CONTACT_ID = 1;
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
@@ -90,7 +91,7 @@ class ContactControllerIT extends AbstractIntegrationTest {
     @Test
     @DisplayName("Should verify that GET method works correctly")
     void contact_retrieving_works() throws Exception {
-        mockMvc.perform(get("/contact/" + RESUME_ID))
+        mockMvc.perform(get("/contact/" + CONTACT_ID))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
@@ -113,7 +114,7 @@ class ContactControllerIT extends AbstractIntegrationTest {
     @Test
     @DisplayName("Should verify that PUT method works correctly")
     void contact_updating_works() throws Exception {
-        mockMvc.perform(put("/contact/" + RESUME_ID)
+        mockMvc.perform(put("/contact/" + CONTACT_ID)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content("""
                                 {
@@ -130,7 +131,7 @@ class ContactControllerIT extends AbstractIntegrationTest {
     @Test
     @DisplayName("Should verify that body request infringe the constrains for PUT method")
     void contact_updating_does_not_work() throws Exception {
-        mockMvc.perform(put("/contact/" + RESUME_ID)
+        mockMvc.perform(put("/contact/" + CONTACT_ID)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content("""
                                 {
@@ -153,7 +154,7 @@ class ContactControllerIT extends AbstractIntegrationTest {
     @Test
     @DisplayName("Should verify that DELETE method works correctly")
     void contact_deleting_works() throws Exception {
-        mockMvc.perform(delete("/contact/" + RESUME_ID))
+        mockMvc.perform(delete("/contact/" + CONTACT_ID))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
